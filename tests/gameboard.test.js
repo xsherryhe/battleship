@@ -109,4 +109,28 @@ describe('gameboard', () => {
       expect(ship.hit).not.toHaveBeenCalled();
     });
   });
+
+  describe('gameboard.allSunk', () => {
+    it('returns false if not all gameboard ships are sunk', () => {
+      const gameboard = Gameboard();
+      const [sunkShip, ...ships] = gameboard.ships.map(
+        (shipItem) => shipItem.ship
+      );
+      sunkShip.isSunk = jest.fn().mockReturnValue(true);
+      ships.forEach((ship) => {
+        ship.isSunk = jest.fn().mockReturnValue(false);
+      });
+
+      expect(gameboard.allSunk()).toBe(false);
+    });
+
+    it('returns true if all gameboard ships are sunk', () => {
+      const gameboard = Gameboard();
+      gameboard.ships.forEach((shipItem) => {
+        shipItem.ship.isSunk = jest.fn().mockReturnValue(true);
+      });
+
+      expect(gameboard.allSunk()).toBe(true);
+    });
+  });
 });

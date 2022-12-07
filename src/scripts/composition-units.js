@@ -52,15 +52,30 @@ export function Collectionable(
   collectionData,
   collectionItemName,
   collectionItemFactory,
-  { moveable = false } = {}
+  { moveable = false, allMethodNames = [] } = {}
 ) {
   const collection = collectionData.map((data) => ({
     [collectionItemName]: collectionItemFactory(data),
     ...(moveable ? { orientation: 0 } : {}),
   }));
 
+  const allMethods = allMethodNames.reduce((methods, method) => {
+    const capitalizedMethod = capitalize(method);
+    function allMethod() {
+      return collection.every((collectionItem) =>
+        collectionItem[collectionItemName][`is${capitalizedMethod}`]()
+      );
+    }
+
+    return {
+      ...methods,
+      [`all${capitalizedMethod}`]: allMethod,
+    };
+  }, {});
+
   return {
     [`${collectionItemName}s`]: collection,
+    ...allMethods,
     ...(moveable
       ? CollectionMoveable(
           collection,
