@@ -1,4 +1,4 @@
-import { capitalize } from './utilities';
+import { capitalize, includesArray } from './utilities';
 
 export function Lengthable(length) {
   return { length };
@@ -21,10 +21,13 @@ export function Sinkable(length, hits) {
 function CollectionMoveable(
   collection,
   collectionItemName,
-  areaSize = Infinity
+  areaLength = Infinity
 ) {
   function clampToArea(position, item) {
-    const maxes = [areaSize - item[collectionItemName].length, areaSize - 1];
+    const maxes = [
+      areaLength - item[collectionItemName].length,
+      areaLength - 1,
+    ];
     const itemMaxes = item.orientation === 0 ? maxes : [...maxes].reverse();
 
     return position.map((coord, i) =>
@@ -80,7 +83,7 @@ export function Collectionable(
       ? CollectionMoveable(
           collection,
           collectionItemName,
-          moveable.areaSize || Infinity
+          moveable.areaLength || Infinity
         )
       : {}),
   };
@@ -107,10 +110,8 @@ export function Attackable(attacks, { attackItemName } = {}) {
 
   function sendAttackToItems(attackItems, position) {
     attackItems.forEach((attackItem) => {
-      const itemHit = attackItemArea(attackItem).some((areaPosition) =>
-        position.every((coord, i) => coord === areaPosition[i])
-      );
-      if (itemHit) attackItem[attackItemName].hit();
+      if (includesArray(position, attackItemArea(attackItem)))
+        attackItem[attackItemName].hit();
     });
   }
 
@@ -120,4 +121,31 @@ export function Attackable(attacks, { attackItemName } = {}) {
   }
 
   return { attacks, receiveAttack };
+}
+
+function AutoAttacking() {
+  function randomAttackPosition(target) {
+    return [...new Array(2)].map(() =>
+      Math.floor(Math.random() * target.length)
+    );
+  }
+
+  function autoAttack(target) {
+    let position = randomAttackPosition(target);
+    while (includesArray(position, target.attacks || []))
+      position = randomAttackPosition(target);
+    this.attack(target, position);
+  }
+
+  return { autoAttack };
+}
+
+export function Attacking({ auto = false } = {}) {
+  function attack(target, position) {
+    if (includesArray(position, target.attacks || []))
+      throw new Error('That position has already been attacked!');
+    target.receiveAttack(position);
+  }
+
+  return { attack, ...(auto ? AutoAttacking() : {}) };
 }

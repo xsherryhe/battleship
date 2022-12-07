@@ -9,6 +9,14 @@ describe('gameboard', () => {
     });
   });
 
+  describe('gameboard.length', () => {
+    it('is the length of the gameboard', () => {
+      const gameboard = Gameboard({ length: 8 });
+      const length = 8;
+      expect(gameboard.length).toBe(length);
+    });
+  });
+
   describe('gameboard.ships', () => {
     it('is a non-empty array of objects containing ships for the gameboard', () => {
       const gameboard = Gameboard();
