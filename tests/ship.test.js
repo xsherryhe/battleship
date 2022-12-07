@@ -1,6 +1,22 @@
 import Ship from '../src/scripts/ship';
 
 describe('ship', () => {
+  describe('ship.type', () => {
+    it('is the string "Ship"', () => {
+      const ship = Ship();
+      const type = 'Ship';
+      expect(ship.type).toBe(type);
+    });
+  });
+
+  describe('ship.length', () => {
+    it('is the length of the ship', () => {
+      const ship = Ship({ length: 4 });
+      const length = 4;
+      expect(ship.length).toBe(length);
+    });
+  });
+
   describe('ship.isSunk', () => {
     it('returns false if the number of hits does not equal the ship length', () => {
       const ship = Ship({ length: 3, hits: 2 });
