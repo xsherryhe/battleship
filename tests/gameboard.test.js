@@ -68,4 +68,45 @@ describe('gameboard', () => {
       expect(gameboard.ships[index].position).toEqual(adjustedCoordinate);
     });
   });
+
+  describe('gameboard.attacks', () => {
+    it('is an array of coordinates that have been attacked', () => {
+      const attacks = [
+        [0, 1],
+        [5, 6],
+        [9, 4],
+      ];
+      const gameboard = Gameboard({ attacks });
+      expect(gameboard.attacks).toEqual(attacks);
+    });
+  });
+
+  describe('gameboard.receiveAttack', () => {
+    it('pushes the coordinate input to gameboard.attacks', () => {
+      const gameboard = Gameboard();
+      const coordinate = [2, 7];
+      gameboard.receiveAttack(coordinate);
+      expect(gameboard.attacks).toContain(coordinate);
+    });
+
+    it('calls ship.hit on a ship positioned at the coordinate input', () => {
+      const gameboard = Gameboard();
+      const { ship } = gameboard.ships[0];
+      ship.hit = jest.fn();
+
+      gameboard.placeShip(0, [1, 3]);
+      gameboard.receiveAttack([4, 3]);
+      expect(ship.hit).toHaveBeenCalled();
+    });
+
+    it('does not call ship.hit on a ship not positioned at the coordinate input', () => {
+      const gameboard = Gameboard();
+      const { ship } = gameboard.ships[0];
+      ship.hit = jest.fn();
+
+      gameboard.placeShip(0, [1, 3]);
+      gameboard.receiveAttack([1, 4]);
+      expect(ship.hit).not.toHaveBeenCalled();
+    });
+  });
 });

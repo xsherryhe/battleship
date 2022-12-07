@@ -18,7 +18,11 @@ export function Sinkable(length, hits) {
   return { hit, isSunk };
 }
 
-function CollectionMoveable(collection, collectionItemName, areaSize) {
+function CollectionMoveable(
+  collection,
+  collectionItemName,
+  areaSize = Infinity
+) {
   function clampToArea(position, item) {
     const maxes = [areaSize - item[collectionItemName].length, areaSize - 1];
     const itemMaxes = item.orientation === 0 ? maxes : [...maxes].reverse();
@@ -58,7 +62,47 @@ export function Collectionable(
   return {
     [`${collectionItemName}s`]: collection,
     ...(moveable
-      ? CollectionMoveable(collection, collectionItemName, moveable.areaSize)
+      ? CollectionMoveable(
+          collection,
+          collectionItemName,
+          moveable.areaSize || Infinity
+        )
       : {}),
   };
+}
+
+export function Attackable(attacks, { attackItemName } = {}) {
+  function attackItemArea(attackItem) {
+    const area = [];
+    if (
+      attackItem.position === undefined ||
+      attackItem.orientation === undefined
+    )
+      return area;
+
+    const coordIndex = attackItem.orientation;
+    for (let i = 0; i < attackItem[attackItemName].length; i += 1) {
+      const coordinate = [...attackItem.position];
+      coordinate[coordIndex] += i;
+      area.push(coordinate);
+    }
+
+    return area;
+  }
+
+  function sendAttackToItems(attackItems, position) {
+    attackItems.forEach((attackItem) => {
+      const itemHit = attackItemArea(attackItem).some((areaPosition) =>
+        position.every((coord, i) => coord === areaPosition[i])
+      );
+      if (itemHit) attackItem[attackItemName].hit();
+    });
+  }
+
+  function receiveAttack(position) {
+    attacks.push(position);
+    if (attackItemName) sendAttackToItems(this[`${attackItemName}s`], position);
+  }
+
+  return { attacks, receiveAttack };
 }

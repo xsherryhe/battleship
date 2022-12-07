@@ -1,9 +1,10 @@
-import { Collectionable, Lengthable } from './composition-units';
+import { Attackable, Collectionable, Lengthable } from './composition-units';
 import Ship from './ship';
 
 export default function Gameboard({
   shipLengths = [5, 4, 3, 3, 2],
   size = 10,
+  attacks = [],
 } = {}) {
   return {
     type: 'Gameboard',
@@ -13,5 +14,6 @@ export default function Gameboard({
       Ship,
       { moveable: { areaSize: size } }
     ),
+    ...Attackable(attacks, { attackItemName: 'ship' }),
   };
 }
