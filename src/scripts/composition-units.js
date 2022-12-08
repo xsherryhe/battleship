@@ -89,6 +89,14 @@ export function Collectionable(
   };
 }
 
+export function Nameable(name) {
+  function setName(newName) {
+    this.name = newName;
+  }
+
+  return { name, setName };
+}
+
 export function Attackable(attacks, { attackItemName } = {}) {
   function attackItemArea(attackItem) {
     const area = [];

@@ -1,9 +1,13 @@
-import { Attacking } from './composition-units';
+import { Attacking, Nameable } from './composition-units';
 
-export function HumanPlayer() {
-  return { ...Attacking() };
+export function HumanPlayer(name = 'Player') {
+  return { type: 'humanPlayer', ...Nameable(name), ...Attacking() };
 }
 
 export function ComputerPlayer() {
-  return { ...Attacking({ auto: true }) };
+  return {
+    type: 'computerPlayer',
+    ...Nameable('Computer'),
+    ...Attacking({ auto: true }),
+  };
 }

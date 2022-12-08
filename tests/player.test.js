@@ -1,6 +1,31 @@
 import { HumanPlayer, ComputerPlayer } from '../src/scripts/player';
 
 describe('humanPlayer', () => {
+  describe('humanPlayer.type', () => {
+    it('is the string "humanPlayer"', () => {
+      const humanPlayer = HumanPlayer();
+      const type = 'humanPlayer';
+      expect(humanPlayer.type).toBe(type);
+    });
+  });
+
+  describe('humanPlayer.name', () => {
+    it('is the name of the player', () => {
+      const humanPlayer = HumanPlayer('Bob');
+      const name = 'Bob';
+      expect(humanPlayer.name).toBe(name);
+    });
+  });
+
+  describe('humanPlayer.setName', () => {
+    it('sets a new name for the player', () => {
+      const humanPlayer = HumanPlayer('Bob');
+      const name = 'John';
+      humanPlayer.setName(name);
+      expect(humanPlayer.name).toBe(name);
+    });
+  });
+
   describe('humanPlayer.attack', () => {
     it('calls gameboard.receiveAttack on the gameboard input with the coordinate input if it is has not already been attacked', () => {
       const humanPlayer = HumanPlayer();
@@ -33,6 +58,22 @@ describe('humanPlayer', () => {
 });
 
 describe('computerPlayer', () => {
+  describe('computerPlayer.type', () => {
+    it('is the string "computerPlayer"', () => {
+      const computerPlayer = ComputerPlayer();
+      const type = 'computerPlayer';
+      expect(computerPlayer.type).toBe(type);
+    });
+  });
+
+  describe('computerPlayer.name', () => {
+    it('is the string "Computer"', () => {
+      const computerPlayer = ComputerPlayer('Bob');
+      const name = 'Computer';
+      expect(computerPlayer.name).toBe(name);
+    });
+  });
+
   describe('computerPlayer.attack', () => {
     it('calls gameboard.receiveAttack on the gameboard input with the coordinate input', () => {
       const computerPlayer = ComputerPlayer();
