@@ -75,6 +75,36 @@ describe('gameboard', () => {
       const adjustedCoordinate = [3, 5];
       expect(gameboard.ships[index].position).toEqual(adjustedCoordinate);
     });
+
+    it('throws an error if the coordinate input is on an occupied position', () => {
+      const gameboard = Gameboard();
+      gameboard.placeShip(0, [0, 0]);
+      expect(() => gameboard.placeShip(1, [1, 0])).toThrow(
+        'position is illegal'
+      );
+    });
+
+    it('throws an error if the coordinate input is next to an occupied position', () => {
+      const gameboard = Gameboard();
+      gameboard.placeShip(0, [0, 0]);
+      expect(() => gameboard.placeShip(1, [0, 1])).toThrow(
+        'position is illegal'
+      );
+    });
+  });
+
+  describe('gameboard.allShipsPlaced', () => {
+    it('returns false if not all ships on the gameboard have a position', () => {
+      const gameboard = Gameboard();
+      gameboard.placeShip(2, [4, 6]);
+      expect(gameboard.allShipsPlaced()).toBe(false);
+    });
+
+    it('returns true if all ships on the gameboard have a position', () => {
+      const gameboard = Gameboard();
+      for (let i = 0; i < 5; i += 1) gameboard.placeShip(i, [0, i * 2]);
+      expect(gameboard.allShipsPlaced()).toBe(true);
+    });
   });
 
   describe('gameboard.attacks', () => {

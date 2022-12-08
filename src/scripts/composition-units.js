@@ -23,6 +23,25 @@ function CollectionMoveable(
   collectionItemName,
   areaLength = Infinity
 ) {
+  function itemArea() {
+    const area = [];
+    if (this.position === undefined || this.orientation === undefined)
+      return area;
+
+    const coordIndex = this.orientation;
+    for (let i = 0; i < this[collectionItemName].length; i += 1) {
+      const coordinate = [...this.position];
+      coordinate[coordIndex] += i;
+      area.push(coordinate);
+    }
+
+    return area;
+  }
+
+  collection.forEach((collectionItem) =>
+    Object.assign(collectionItem, { orientation: 0, area: itemArea })
+  );
+
   function clampToArea(position, item) {
     const maxes = [
       areaLength - item[collectionItemName].length,
@@ -35,9 +54,47 @@ function CollectionMoveable(
     );
   }
 
+  function getBorderingArea(area) {
+    return area.reduce((borderingArea, [row, col]) => {
+      const borderingPositions = [
+        [1, 0],
+        [-1, 0],
+        [0, 1],
+        [0, -1],
+        [1, 1],
+        [1, -1],
+        [-1, 1],
+        [-1, 1],
+      ]
+        .map(([rowOffset, colOffset]) => [row + rowOffset, col + colOffset])
+        .filter((borderingPosition) => !includesArray(borderingPosition, area));
+      return [...borderingArea, ...borderingPositions];
+    }, []);
+  }
+
+  function illegalPositions() {
+    return collection.reduce((positions, collectionItem) => {
+      if (!collectionItem.position) return positions;
+
+      const collectionItemArea = collectionItem.area();
+      return [
+        ...positions,
+        ...collectionItemArea,
+        ...getBorderingArea(collectionItemArea),
+      ];
+    }, []);
+  }
+
   function place(collectionIndex, position) {
     const collectionItem = collection[collectionIndex];
-    collectionItem.position = clampToArea(position, collectionItem);
+    const clampedPosition = clampToArea(position, collectionItem);
+    if (includesArray(clampedPosition, illegalPositions()))
+      throw new Error('This position is illegal!');
+    collectionItem.position = clampedPosition;
+  }
+
+  function allPlaced() {
+    return collection.every((collectionItem) => collectionItem.position);
   }
 
   function rotate(collectionIndex) {
@@ -45,9 +102,12 @@ function CollectionMoveable(
     collectionItem.orientation = [1, 0][collectionItem.orientation];
   }
 
+  const capitalizedCollectionItem = capitalize(collectionItemName);
+
   return {
-    [`place${capitalize(collectionItemName)}`]: place,
-    [`rotate${capitalize(collectionItemName)}`]: rotate,
+    [`place${capitalizedCollectionItem}`]: place,
+    [`all${capitalizedCollectionItem}sPlaced`]: allPlaced,
+    [`rotate${capitalizedCollectionItem}`]: rotate,
   };
 }
 
@@ -59,7 +119,6 @@ export function Collectionable(
 ) {
   const collection = collectionData.map((data) => ({
     [collectionItemName]: collectionItemFactory(data),
-    ...(moveable ? { orientation: 0 } : {}),
   }));
 
   const allMethods = allMethodNames.reduce((methods, method) => {
@@ -98,27 +157,9 @@ export function Nameable(name) {
 }
 
 export function Attackable(attacks, { attackItemName } = {}) {
-  function attackItemArea(attackItem) {
-    const area = [];
-    if (
-      attackItem.position === undefined ||
-      attackItem.orientation === undefined
-    )
-      return area;
-
-    const coordIndex = attackItem.orientation;
-    for (let i = 0; i < attackItem[attackItemName].length; i += 1) {
-      const coordinate = [...attackItem.position];
-      coordinate[coordIndex] += i;
-      area.push(coordinate);
-    }
-
-    return area;
-  }
-
   function sendAttackToItems(attackItems, position) {
     attackItems.forEach((attackItem) => {
-      if (includesArray(position, attackItemArea(attackItem)))
+      if (includesArray(position, attackItem.area()))
         attackItem[attackItemName].hit();
     });
   }
