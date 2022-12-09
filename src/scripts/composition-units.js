@@ -198,3 +198,14 @@ export function Attacking({ auto = false } = {}) {
 
   return { attack, ...(auto ? AutoAttacking() : {}) };
 }
+
+export function TurnTaking({ method = '' } = {}) {
+  function takeTurn(data) {
+    if (!method) return false;
+
+    this[method](data);
+    return true;
+  }
+
+  return { takeTurn };
+}

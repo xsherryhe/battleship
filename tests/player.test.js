@@ -55,6 +55,13 @@ describe('humanPlayer', () => {
       }
     });
   });
+
+  describe('humanPlayer.takeTurn', () => {
+    it('returns false', () => {
+      const humanPlayer = HumanPlayer();
+      expect(humanPlayer.takeTurn()).toBe(false);
+    });
+  });
 });
 
 describe('computerPlayer', () => {
@@ -110,6 +117,21 @@ describe('computerPlayer', () => {
       const coordinate = [0, 1];
       computerPlayer.autoAttack(gameboard);
       expect(gameboard.receiveAttack.mock.calls[0][0]).toEqual(coordinate);
+    });
+  });
+
+  describe('computerPlayer.takeTurn', () => {
+    const computerPlayer = ComputerPlayer();
+    computerPlayer.autoAttack = jest.fn();
+
+    it('returns something truthy', () => {
+      expect(computerPlayer.takeTurn()).toBeTruthy();
+    });
+
+    it('calls computerPlayer.autoAttack on the gameboard input', () => {
+      const gameboard = {};
+      computerPlayer.takeTurn(gameboard);
+      expect(computerPlayer.autoAttack).toHaveBeenCalledWith(gameboard);
     });
   });
 });
