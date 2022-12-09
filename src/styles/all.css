@@ -1,0 +1,18 @@
+* {
+  box-sizing: border-box;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.gameboard {
+  display: grid;
+  width: max-content;
+  border: 0.1rem solid black;
+}
+
+.square {
+  border: 0.05rem solid black;
+  background-color: white;
+}

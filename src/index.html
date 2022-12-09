@@ -7,5 +7,28 @@
   <title>Battleship</title>
 </head>
 <body>
+  <header>
+    Battleship
+  </header>
+  <main>
+    <section class="mode-selection">
+      <button data-mode="0">Play against the computer</button>
+      <button data-mode="1">Play against a friend</button>
+    </section>
+    <section class="player-set-up hidden">
+      <form action="">
+        <button type="submit">Submit</button>
+      </form>
+    </section>
+    <section class="game hidden">
+      <div class="message"></div>
+      <div class="game-area game-area-0">
+        <div class="gameboard"></div>
+      </div>
+      <div class="game-area game-area-1 hidden">
+        <div class="gameboard"></div>
+      </div>
+    </section>
+  </main>
 </body>
 </html>
