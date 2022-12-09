@@ -17,8 +17,8 @@ function initializeModes(modes) {
   gameData.modes = gameModes;
 }
 
-function initializeGameboards() {
-  gameData.gameboards = [...new Array(2)].map(() => Gameboard());
+function initializeGameboards(length) {
+  gameData.gameboards = [...new Array(2)].map(() => Gameboard({ length }));
   if (gameData.modes.playerMode) return;
 
   const computerPlayerIndex = gameData.players.findIndex(
@@ -50,10 +50,10 @@ function getGameOver() {
   return gameData.gameboards.some((gameboard) => gameboard.allSunk());
 }
 
-export function initializeGame({ playerMode = 0 } = {}) {
+export function initializeGame({ playerMode = 0, gameboardLength = 10 } = {}) {
   initializeModes({ playerMode });
   initializePlayers();
-  initializeGameboards();
+  initializeGameboards(gameboardLength);
   initializePlayerIndex();
   initializeGameOver();
 }

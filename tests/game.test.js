@@ -48,10 +48,15 @@ describe('initializeGame', () => {
     expect(gameData.modes.playerMode).toBe(1);
   });
 
-  it('populates the gameboards array with two new gameboards', () => {
+  it('populates the gameboards array with two new gameboards of length 10 by default', () => {
     initializeGame();
-    expect(Gameboard.mock.calls).toEqual([[], []]);
+    expect(Gameboard.mock.calls).toEqual([[{ length: 10 }], [{ length: 10 }]]);
     expect(gameData.gameboards).toHaveLength(2);
+  });
+
+  it('populates the gameboards array with two new gameboards of the gameboard length input', () => {
+    initializeGame({ gameboardLength: 2 });
+    expect(Gameboard.mock.calls).toEqual([[{ length: 2 }], [{ length: 2 }]]);
   });
 
   it('populates the players array with two new players', () => {
