@@ -10,7 +10,9 @@ import { HumanPlayer, ComputerPlayer } from '../src/scripts/player';
 
 jest.mock('../src/scripts/gameboard', () => ({
   __esModule: true,
-  default: jest.fn(() => ({})),
+  default: jest.fn(() => ({
+    autoPlaceShips: jest.fn(),
+  })),
 }));
 
 jest.mock('../src/scripts/player', () => ({
@@ -93,12 +95,39 @@ describe('initializeGame', () => {
       expect(humanPlayerIndices).toContain(0);
       expect(humanPlayerIndices).toContain(1);
     });
+
+    it('calls autoPlaceShips on the gameboard of the computer player', () => {
+      initializeGame();
+      const gameboard =
+        gameData.gameboards[
+          gameData.players.findIndex(
+            (player) => player.type === 'computerPlayer'
+          )
+        ];
+      expect(gameboard.autoPlaceShips).toHaveBeenCalled();
+    });
+
+    it('does not call autoPlaceShips on the gameboard of the human player', () => {
+      initializeGame();
+      const gameboard =
+        gameData.gameboards[
+          gameData.players.findIndex((player) => player.type === 'humanPlayer')
+        ];
+      expect(gameboard.autoPlaceShips).not.toHaveBeenCalled();
+    });
   });
 
   describe('in two-player mode', () => {
     it('creates two human players', () => {
       initializeGame({ playerMode: 1 });
       expect(HumanPlayer.mock.calls).toEqual([[], []]);
+    });
+
+    it('does not call autoPlaceShips on any gameboard', () => {
+      initializeGame({ playerMode: 1 });
+      gameData.gameboards.forEach((gameboard) => {
+        expect(gameboard.autoPlaceShips).not.toHaveBeenCalled();
+      });
     });
   });
 });

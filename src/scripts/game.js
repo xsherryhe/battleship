@@ -3,8 +3,8 @@ import { ComputerPlayer, HumanPlayer } from './player';
 
 export const gameData = {
   modes: { playerMode: 0 },
-  gameboards: [],
   players: [],
+  gameboards: [],
   currPlayerIndex: 0,
   gameOver: false,
 };
@@ -19,6 +19,12 @@ function initializeModes(modes) {
 
 function initializeGameboards() {
   gameData.gameboards = [...new Array(2)].map(() => Gameboard());
+  if (gameData.modes.playerMode) return;
+
+  const computerPlayerIndex = gameData.players.findIndex(
+    (player) => player.type === 'computerPlayer'
+  );
+  gameData.gameboards[computerPlayerIndex].autoPlaceShips();
 }
 
 function initializePlayers() {
@@ -46,8 +52,8 @@ function getGameOver() {
 
 export function initializeGame({ playerMode = 0 } = {}) {
   initializeModes({ playerMode });
-  initializeGameboards();
   initializePlayers();
+  initializeGameboards();
   initializePlayerIndex();
   initializeGameOver();
 }

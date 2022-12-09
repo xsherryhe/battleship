@@ -102,12 +102,30 @@ function CollectionMoveable(
     collectionItem.orientation = 1 - collectionItem.orientation;
   }
 
+  function getRandomPosition() {
+    return [...new Array(2)].map(() => Math.floor(Math.random() * areaLength));
+  }
+
+  function autoPlace() {
+    collection.forEach((collectionItem, i) => {
+      if (Math.floor(Math.random() * 2)) rotate(i);
+      while (!collectionItem.position) {
+        try {
+          place(i, getRandomPosition());
+        } catch {
+          // Do nothing
+        }
+      }
+    });
+  }
+
   const capitalizedCollectionItem = capitalize(collectionItemName);
 
   return {
     [`place${capitalizedCollectionItem}`]: place,
     [`all${capitalizedCollectionItem}sPlaced`]: allPlaced,
     [`rotate${capitalizedCollectionItem}`]: rotate,
+    [`autoPlace${capitalizedCollectionItem}s`]: autoPlace,
   };
 }
 

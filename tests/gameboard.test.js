@@ -1,5 +1,4 @@
 import Gameboard from '../src/scripts/gameboard';
-
 describe('gameboard', () => {
   describe('gameboard.type', () => {
     it('is the string "Gameboard"', () => {
@@ -104,6 +103,41 @@ describe('gameboard', () => {
       const gameboard = Gameboard();
       for (let i = 0; i < 5; i += 1) gameboard.placeShip(i, [0, i * 2]);
       expect(gameboard.allShipsPlaced()).toBe(true);
+    });
+  });
+
+  describe('gameboard.autoPlaceShips', () => {
+    it('gives places all ships on the gameboard', () => {
+      const gameboard = Gameboard();
+      gameboard.autoPlaceShips();
+      expect(gameboard.allShipsPlaced()).toBe(true);
+    });
+
+    it('randomizes the position of the ships', () => {
+      // Probabilistic with a probabilility of >99.99999%
+      const shipPositions = [];
+      for (let i = 0; i < 6; i += 1) {
+        const gameboard = Gameboard();
+        gameboard.autoPlaceShips();
+        shipPositions.push(gameboard.ships[0].position);
+      }
+      const allSamePosition = shipPositions.every(
+        ([row, col]) =>
+          row === shipPositions[0][0] && col === shipPositions[0][1]
+      );
+      expect(allSamePosition).toBe(false);
+    });
+
+    it('randomizes the orientation of the ships', () => {
+      // Probabilistic with a probabilility of >99.999%
+      const shipOrientations = [];
+      for (let i = 0; i < 20; i += 1) {
+        const gameboard = Gameboard();
+        gameboard.autoPlaceShips();
+        shipOrientations.push(gameboard.ships[0].orientation);
+      }
+      expect(shipOrientations).toContain(0);
+      expect(shipOrientations).toContain(1);
     });
   });
 
