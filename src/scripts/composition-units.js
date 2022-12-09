@@ -99,7 +99,7 @@ function CollectionMoveable(
 
   function rotate(collectionIndex) {
     const collectionItem = collection[collectionIndex];
-    collectionItem.orientation = [1, 0][collectionItem.orientation];
+    collectionItem.orientation = 1 - collectionItem.orientation;
   }
 
   const capitalizedCollectionItem = capitalize(collectionItemName);
