@@ -2,18 +2,27 @@ import Gameboard from './gameboard';
 import { ComputerPlayer, HumanPlayer } from './player';
 
 export const gameData = {
+  modes: { playerMode: 0 },
   gameboards: [],
   players: [],
   currPlayerIndex: 0,
   gameOver: false,
 };
 
+function initializeModes(modes) {
+  const gameModes = { ...modes };
+  Object.keys(gameModes).forEach((mode) => {
+    gameModes[mode] = Number(gameModes[mode]);
+  });
+  gameData.modes = gameModes;
+}
+
 function initializeGameboards() {
   gameData.gameboards = [...new Array(2)].map(() => Gameboard());
 }
 
-function initializePlayers(mode) {
-  if (mode) {
+function initializePlayers() {
+  if (gameData.modes.playerMode) {
     gameData.players = [...new Array(2)].map(() => HumanPlayer());
   } else {
     gameData.players = [];
@@ -36,8 +45,9 @@ function getGameOver() {
 }
 
 export function initializeGame({ playerMode = 0 } = {}) {
+  initializeModes({ playerMode });
   initializeGameboards();
-  initializePlayers(playerMode);
+  initializePlayers();
   initializePlayerIndex();
   initializeGameOver();
 }

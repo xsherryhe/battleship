@@ -35,6 +35,17 @@ afterAll(() => {
 });
 
 describe('initializeGame', () => {
+  it('sets the player mode of the game to 0 by default', () => {
+    delete gameData.modes;
+    initializeGame();
+    expect(gameData.modes.playerMode).toBe(0);
+  });
+
+  it('sets the player mode of the game to the player mode input', () => {
+    initializeGame({ playerMode: 1 });
+    expect(gameData.modes.playerMode).toBe(1);
+  });
+
   it('populates the gameboards array with two new gameboards', () => {
     initializeGame();
     expect(Gameboard.mock.calls).toEqual([[], []]);
