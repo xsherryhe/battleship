@@ -29,4 +29,18 @@ describe('utilities', () => {
       expect(utilities.includesArray(array, nestedArray)).toBe(false);
     });
   });
+
+  describe('equalsArray', () => {
+    it('returns true if the two array inputs have the same contents', () => {
+      const array1 = ['a', 3, 7];
+      const array2 = ['a', 3, 7];
+      expect(utilities.equalsArray(array1, array2)).toBe(true);
+    });
+
+    it('returns false if the two array inputs do not have the same contents', () => {
+      const array1 = ['b', 4, 2];
+      const array2 = ['b', 2, 4];
+      expect(utilities.equalsArray(array1, array2)).toBe(false);
+    });
+  });
 });

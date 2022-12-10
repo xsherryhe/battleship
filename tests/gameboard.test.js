@@ -1,4 +1,5 @@
 import Gameboard from '../src/scripts/gameboard';
+import { equalsArray } from '../src/scripts/utilities';
 describe('gameboard', () => {
   describe('gameboard.type', () => {
     it('is the string "Gameboard"', () => {
@@ -121,9 +122,8 @@ describe('gameboard', () => {
         gameboard.autoPlaceShips();
         shipPositions.push(gameboard.ships[0].position);
       }
-      const allSamePosition = shipPositions.every(
-        ([row, col]) =>
-          row === shipPositions[0][0] && col === shipPositions[0][1]
+      const allSamePosition = shipPositions.every((position) =>
+        equalsArray(position, shipPositions[0])
       );
       expect(allSamePosition).toBe(false);
     });

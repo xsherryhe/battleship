@@ -7,3 +7,7 @@ export function includesArray(array, nestedArray) {
     arrayItem.every((item, i) => item === array[i])
   );
 }
+
+export function equalsArray(array1, array2) {
+  return array1.every((elem, i) => array2[i] === elem);
+}
