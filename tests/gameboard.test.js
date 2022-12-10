@@ -119,6 +119,44 @@ describe('gameboard', () => {
     });
   });
 
+  describe('gameboard.legalShipPlacement', () => {
+    it('returns true if the coordinate input is a legal ship placement position', () => {
+      const gameboard = Gameboard();
+      gameboard.placeShip(0, [3, 9]);
+      expect(gameboard.legalShipPlacement(2, [4, 1])).toBe(true);
+    });
+
+    it('returns false if the coordinate input is on an occupied position', () => {
+      const gameboard = Gameboard();
+      gameboard.placeShip(0, [2, 4]);
+      expect(gameboard.legalShipPlacement(2, [4, 4])).toBe(false);
+    });
+
+    it('returns false if the ship area designated by the coordinate input is on an occupied position', () => {
+      const gameboard = Gameboard();
+      gameboard.placeShip(0, [5, 7]);
+      expect(gameboard.legalShipPlacement(2, [4, 7])).toBe(false);
+    });
+
+    it('returns false if the coordinate input is next to an occupied position', () => {
+      const gameboard = Gameboard();
+      gameboard.placeShip(0, [5, 6]);
+      expect(gameboard.legalShipPlacement(2, [5, 7])).toBe(false);
+    });
+
+    it('returns false if the ship area designated by the coordinate input is next to an occupied position', () => {
+      const gameboard = Gameboard();
+      gameboard.placeShip(0, [5, 4]);
+      expect(gameboard.legalShipPlacement(2, [3, 3])).toBe(false);
+    });
+
+    it('returns true if the coordinate input only conflicts with the position of the same ship input', () => {
+      const gameboard = Gameboard();
+      gameboard.placeShip(0, [3, 2]);
+      expect(gameboard.legalShipPlacement(0, [3, 1])).toBe(true);
+    });
+  });
+
   describe('gameboard.allShipsPlaced', () => {
     it('returns false if not all ships on the gameboard have a position', () => {
       const gameboard = Gameboard();

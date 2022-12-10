@@ -85,19 +85,23 @@ function CollectionMoveable(
     }, []);
   }
 
+  function legalPlacement(collectionIndex, position) {
+    return collection[collectionIndex]
+      .area(position)
+      .every(
+        (areaPosition) =>
+          !includesArray(
+            areaPosition,
+            illegalPositions({ excluding: [collectionIndex] })
+          )
+      );
+  }
+
   function place(collectionIndex, position) {
     const collectionItem = collection[collectionIndex];
     const clampedPosition = clampToArea(position, collectionItem);
-
-    const illegal = collectionItem
-      .area(clampedPosition)
-      .some((areaPosition) =>
-        includesArray(
-          areaPosition,
-          illegalPositions({ excluding: [collectionIndex] })
-        )
-      );
-    if (illegal) throw new Error('This position is illegal!');
+    if (!legalPlacement(collectionIndex, clampedPosition))
+      throw new Error('This position is illegal!');
 
     collectionItem.position = clampedPosition;
   }
@@ -132,6 +136,7 @@ function CollectionMoveable(
 
   return {
     [`place${capitalizedCollectionItem}`]: place,
+    [`legal${capitalizedCollectionItem}Placement`]: legalPlacement,
     [`all${capitalizedCollectionItem}sPlaced`]: allPlaced,
     [`rotate${capitalizedCollectionItem}`]: rotate,
     [`autoPlace${capitalizedCollectionItem}s`]: autoPlace,
