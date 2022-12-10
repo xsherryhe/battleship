@@ -84,12 +84,38 @@ describe('gameboard', () => {
       );
     });
 
+    it('throws an error if the ship area designated by the coordinate input is on an occupied position', () => {
+      const gameboard = Gameboard();
+      gameboard.placeShip(0, [3, 0]);
+      expect(() => gameboard.placeShip(1, [1, 0])).toThrow(
+        'position is illegal'
+      );
+    });
+
     it('throws an error if the coordinate input is next to an occupied position', () => {
       const gameboard = Gameboard();
       gameboard.placeShip(0, [0, 0]);
       expect(() => gameboard.placeShip(1, [0, 1])).toThrow(
         'position is illegal'
       );
+    });
+
+    it('throws an error if the ship area designated by the coordinate input is next to an occupied position', () => {
+      const gameboard = Gameboard();
+      gameboard.placeShip(0, [4, 3]);
+      expect(() => gameboard.placeShip(1, [2, 4])).toThrow(
+        'position is illegal'
+      );
+    });
+
+    it('succeeds if the coordinate input only conflicts with the position of the ship input that should be moved', () => {
+      const gameboard = Gameboard();
+      gameboard.placeShip(0, [0, 0]);
+      const newPosition = [0, 1];
+
+      expect(() => gameboard.placeShip(0, newPosition)).not.toThrow();
+      gameboard.placeShip(0, newPosition);
+      expect(gameboard.ships[0].position).toEqual(newPosition);
     });
   });
 

@@ -23,14 +23,13 @@ function CollectionMoveable(
   collectionItemName,
   areaLength = Infinity
 ) {
-  function itemArea() {
+  function itemArea(position = this.position) {
     const area = [];
-    if (this.position === undefined || this.orientation === undefined)
-      return area;
+    if (position === undefined || this.orientation === undefined) return area;
 
     const coordIndex = this.orientation;
     for (let i = 0; i < this[collectionItemName].length; i += 1) {
-      const coordinate = [...this.position];
+      const coordinate = [...position];
       coordinate[coordIndex] += i;
       area.push(coordinate);
     }
@@ -72,9 +71,10 @@ function CollectionMoveable(
     }, []);
   }
 
-  function illegalPositions() {
-    return collection.reduce((positions, collectionItem) => {
-      if (!collectionItem.position) return positions;
+  function illegalPositions({ excluding } = {}) {
+    return collection.reduce((positions, collectionItem, collectionIndex) => {
+      if (!collectionItem.position || excluding.includes(collectionIndex))
+        return positions;
 
       const collectionItemArea = collectionItem.area();
       return [
@@ -88,8 +88,17 @@ function CollectionMoveable(
   function place(collectionIndex, position) {
     const collectionItem = collection[collectionIndex];
     const clampedPosition = clampToArea(position, collectionItem);
-    if (includesArray(clampedPosition, illegalPositions()))
-      throw new Error('This position is illegal!');
+
+    const illegal = collectionItem
+      .area(clampedPosition)
+      .some((areaPosition) =>
+        includesArray(
+          areaPosition,
+          illegalPositions({ excluding: [collectionIndex] })
+        )
+      );
+    if (illegal) throw new Error('This position is illegal!');
+
     collectionItem.position = clampedPosition;
   }
 
