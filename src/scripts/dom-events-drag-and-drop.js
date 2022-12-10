@@ -34,7 +34,8 @@ export default function enableGameboardDragAndDrop() {
       ship.style.position = 'absolute';
 
       const targetSquare = gameboardSquares.find(
-        ({ position: targetPosition }) =>
+        ({ position: targetPosition, gameAreaIndex: targetGameAreaIndex }) =>
+          gameAreaIndex === targetGameAreaIndex &&
           equalsArray(shipPosition, targetPosition)
       ).square;
       targetSquare.appendChild(ship);
