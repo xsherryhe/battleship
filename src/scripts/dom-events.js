@@ -1,12 +1,16 @@
-import { modeSelectionButtons, playerSetUpForm } from './dom-elements';
+import {
+  modeSelectionButtons,
+  playerSetUpForm,
+} from './dom-elements';
+import enableGameboardDragAndDrop from './dom-events-drag-and-drop';
 import { gameData, initializeGame } from './game';
 import * as settings from './settings';
 import {
   modeSelectionView,
   playerSetUpView,
   gameView,
-  drawGameboards,
-  showGameArea,
+  drawGameAreas,
+  highlightGameArea,
   showGameboardSetUpMessage,
   showPlayGameButton,
 } from './views';
@@ -17,6 +21,7 @@ function submitMode(e) {
   initializeGame({
     playerMode: Number(e.target.closest('button').dataset.mode),
     gameboardLength: settings.gameboardLength,
+    shipLengths: settings.shipLengths,
   });
   playerSetUpView(gameData.modes.playerMode);
 }
@@ -45,16 +50,16 @@ function updateGameboardSetUp() {
     (gameboard) => !gameboard.allShipsPlaced()
   );
   if (index < 0) showPlayGameButton();
-  showGameArea(index);
+  highlightGameArea(index);
   showGameboardSetUpMessage(gameData.players[index].name);
 }
 
 function startGameboardSetUp() {
   gameView();
-  drawGameboards();
+  drawGameAreas(gameData.players.map((player) => player.name));
+  enableGameboardDragAndDrop();
   updateGameboardSetUp();
 }
-
 /*
 function placeShip() {
   call gameboard.placeShip

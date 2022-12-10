@@ -15,4 +15,15 @@ export const playerSetUpForm = document.querySelector(
 export const gameView = document.querySelector('section.game');
 export const gameMessage = document.querySelector('.game .message');
 export const gameAreaDivs = document.querySelectorAll('.game .game-area');
+export const gameboardLabelDivs = document.querySelectorAll(
+  '.game .gameboard-label'
+);
 export const gameboardDivs = document.querySelectorAll('.game .gameboard');
+export const gameboardSquareDivs = () =>
+  document.querySelectorAll('.game .gameboard .square');
+export const shipsDivs = document.querySelectorAll('.game .ships');
+export const shipDivs = () => document.querySelectorAll('.game .ship');
+export const shipDiv = (gameAreaIndex, shipIndex) =>
+  document.querySelector(
+    `.game .ship[data-game-area-index="${gameAreaIndex}"][data-index="${shipIndex}"]`
+  );

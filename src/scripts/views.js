@@ -35,31 +35,79 @@ export function gameView() {
   dom.gameView.classList.remove('hidden');
 }
 
-export function drawGameboards() {
+function drawGameboards(squareLength, gameboardLength) {
   dom.gameboardDivs.forEach((gameboardDiv) => {
-    const { gameboardLength } = settings;
-    const squareSize =
-      Math.min(window.innerHeight, window.innerWidth) /
-      (2.25 * gameboardLength);
-
     gameboardDiv.style.display = 'grid';
-    gameboardDiv.style.gridTemplate = `repeat(${gameboardLength}, ${squareSize}px) / repeat(${gameboardLength}, ${squareSize}px)`;
+    gameboardDiv.style.gridTemplate = `repeat(${gameboardLength}, ${squareLength}px) / repeat(${gameboardLength}, ${squareLength}px)`;
 
     for (let i = 0; i < gameboardLength ** 2; i += 1)
       gameboardDiv.insertAdjacentHTML(
         'beforeend',
-        `<div class="square"></div>`
+        `<div class="square" data-index="${i}"></div>`
       );
   });
+}
+
+function shipTemplate(squareLength, shipLength, shipIndex, gameAreaIndex) {
+  let template = `<div style="display: grid; grid-template: repeat(${shipLength}, ${squareLength}px) / repeat(2, ${
+    squareLength / 2
+  }px);" class="ship" data-game-area-index="${gameAreaIndex}" data-index="${shipIndex}" data-square-center="${
+    squareLength / 2
+  }" draggable="true">`;
+  for (let i = 0; i < shipLength; i += 1) {
+    if (i === 0) {
+      template += `<div class="ship-square top-left"></div>`;
+      template += `<div class="ship-square top-right"></div>`;
+    } else if (i === shipLength - 1) {
+      template += `<div class="ship-square bottom-left"></div>`;
+      template += `<div class="ship-square bottom-right"></div>`;
+    } else {
+      template += `<div class="ship-square full"></div>`;
+    }
+  }
+  template += '</div>';
+  return template;
+}
+
+function drawShips(squareLength) {
+  dom.shipsDivs.forEach((shipsDiv, gameAreaIndex) => {
+    settings.shipLengths.forEach((shipLength, shipIndex) => {
+      shipsDiv.insertAdjacentHTML(
+        'beforeend',
+        shipTemplate(squareLength, shipLength, shipIndex, gameAreaIndex)
+      );
+    });
+  });
+}
+
+
+export function drawGameAreas(nameLabels) {
+  dom.gameboardLabelDivs.forEach((labelDiv, i) => {
+    labelDiv.textContent = `${nameLabels[i]}'s Shipyard`;
+  });
+
+  const squareLength =
+    Math.min(window.innerHeight, window.innerWidth) /
+    (2.25 * settings.gameboardLength);
+  drawGameboards(squareLength, settings.gameboardLength);
+  drawShips(squareLength);
 }
 
 export function showGameboardSetUpMessage(name) {
   dom.gameMessage.textContent = `${name}, place your ships.`;
 }
 
-export function showGameArea(gameAreaIndex) {
-  dom.gameAreaDivs.forEach((gameArea) => gameArea.classList.add('hidden'));
-  dom.gameAreaDivs[gameAreaIndex].classList.remove('hidden');
+export function highlightGameArea(gameAreaIndex) {
+  dom.gameAreaDivs.forEach((gameArea, i) => {
+    const ships = gameArea.querySelectorAll('.ship');
+    if (i !== gameAreaIndex) {
+      gameArea.classList.add('disabled');
+      ships.forEach((ship) => ship.classList.add('hidden'));
+    } else {
+      gameArea.classList.remove('disabled');
+      ships.forEach((ship) => ship.classList.remove('hidden'));
+    }
+  });
 }
 
 export function showPlayGameButton() {}

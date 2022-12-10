@@ -6,6 +6,11 @@
   display: none !important;
 }
 
+.game-areas {
+  display: flex;
+  gap: 2rem;
+}
+
 .gameboard {
   display: grid;
   width: max-content;
@@ -14,5 +19,45 @@
 
 .square {
   border: 0.05rem solid black;
-  background-color: white;
+  position: relative;
+}
+
+.ship { 
+  display: grid;
+  z-index: 1;
+}
+
+.ships {
+  display: flex;
+  gap: 1rem;
+}
+
+.ship-square.full {
+  background-color: black;
+  grid-column: 1 / span 2;
+}
+
+.ship-square.top-left {
+  background-image: linear-gradient(to bottom right, transparent 50%, black 50%);
+  grid-column: 1;
+}
+
+.ship-square.top-right {
+  background-image: linear-gradient(to bottom left, transparent 50%, black 50%);
+  grid-column: 2;
+}
+
+.ship-square.bottom-left {
+  background-image: linear-gradient(to bottom left, black 50%, transparent 50%);
+  grid-column: 1;
+}
+
+.ship-square.bottom-right {
+  background-image: linear-gradient(to bottom right, black 50%, transparent 50%);
+  grid-column: 2;
+}
+
+.disabled * {
+  color: gray;
+  border-color: lightgray;
 }
