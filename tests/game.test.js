@@ -48,15 +48,21 @@ describe('initializeGame', () => {
     expect(gameData.modes.playerMode).toBe(1);
   });
 
-  it('populates the gameboards array with two new gameboards of length 10 by default', () => {
+  it('populates the gameboards array with two new gameboards with default lengths', () => {
     initializeGame();
-    expect(Gameboard.mock.calls).toEqual([[{ length: 10 }], [{ length: 10 }]]);
+    expect(Gameboard.mock.calls).toEqual([
+      [{ length: 10, shipLengths: [5, 4, 3, 3, 2] }],
+      [{ length: 10, shipLengths: [5, 4, 3, 3, 2] }],
+    ]);
     expect(gameData.gameboards).toHaveLength(2);
   });
 
-  it('populates the gameboards array with two new gameboards of the gameboard length input', () => {
-    initializeGame({ gameboardLength: 2 });
-    expect(Gameboard.mock.calls).toEqual([[{ length: 2 }], [{ length: 2 }]]);
+  it('populates the gameboards array with two new gameboards with custom length inputs', () => {
+    initializeGame({ gameboardLength: 2, shipLengths: [6, 2, 4, 4, 5, 1] });
+    expect(Gameboard.mock.calls).toEqual([
+      [{ length: 2, shipLengths: [6, 2, 4, 4, 5, 1] }],
+      [{ length: 2, shipLengths: [6, 2, 4, 4, 5, 1] }],
+    ]);
   });
 
   it('populates the players array with two new players', () => {
