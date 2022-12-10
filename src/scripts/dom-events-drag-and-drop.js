@@ -13,6 +13,7 @@ export default function enableGameboardDragAndDrop() {
     ],
     gameAreaIndex: Number(square.closest('.game-area').dataset.index),
   }));
+  const ships = shipDivs();
 
   gameboardSquares.forEach(({ square, position, gameAreaIndex }) => {
     function dragOverSquare(e) {
@@ -62,7 +63,7 @@ export default function enableGameboardDragAndDrop() {
     square.addEventListener('drop', dropShip);
   });
 
-  shipDivs().forEach((ship) => {
+  ships.forEach((ship) => {
     function drag(e) {
       e.dataTransfer.setData(
         'text/plain',
@@ -82,7 +83,7 @@ export default function enableGameboardDragAndDrop() {
     ship.addEventListener('dragover', dragOverShip);
 
     function dragEnd() {
-      shipDivs().forEach((dragEndShip) => {
+      ships.forEach((dragEndShip) => {
         dragEndShip.style.zIndex = 1;
       });
     }
