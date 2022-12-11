@@ -101,7 +101,7 @@ export function colorizeShipBorder(
       const squareIndex = settings.gameboardLength * borderRow + borderCol;
       dom.gameboardDivs[gameboardIndex].querySelector(
         `.square[data-index="${squareIndex}"]`
-      ).style.backgroundColor = legal ? 'green' : 'red';
+      ).style.backgroundColor = legal ? 'green' : 'rgba(255, 0, 0, 0.5)';
     });
 }
 
