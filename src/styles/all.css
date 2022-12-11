@@ -15,6 +15,7 @@
   display: grid;
   width: max-content;
   border: 0.1rem solid black;
+  background-color: white;
 }
 
 .square {
@@ -22,14 +23,26 @@
   position: relative;
 }
 
-.ship { 
-  display: grid;
-  z-index: 1;
+.square.with-background-ship {
+  transform-style: preserve-3d;
+}
+
+.square.with-background-ship .ship {
+  transform: translateZ(-1px);
 }
 
 .ships {
   display: flex;
   gap: 1rem;
+}
+
+.ship {
+  display: grid;
+  z-index: 1;
+}
+
+.ship.on-gameboard {
+  position: absolute;
 }
 
 .ship-square.full {

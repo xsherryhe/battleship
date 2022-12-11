@@ -1,8 +1,10 @@
-import { gameboardSquareDivs, shipDivs, shipDiv } from './dom-elements';
-import { colorizeShipBorder } from './views';
+import { gameboardSquareDivs, shipDivs } from './dom-elements';
+import { colorizeShipBorder, uncolorizeShipBorder } from './views';
 import { gameData } from './game';
 import * as settings from './settings';
 import { equalsArray } from './utilities';
+
+let draggedShip;
 
 export default function enableGameboardDragAndDrop() {
   const gameboardSquares = [...gameboardSquareDivs()].map((square) => ({
@@ -19,36 +21,36 @@ export default function enableGameboardDragAndDrop() {
     function dragOverSquare(e) {
       e.preventDefault();
       e.dataTransfer.dropEffect = 'move';
+      if (Number(draggedShip.dataset.gameAreaIndex) !== gameAreaIndex) return;
 
-      const [shipGameAreaIndex, shipIndex] = e.dataTransfer
-        .getData('text/plain')
-        .split(',')
-        .map(Number);
-      if (shipGameAreaIndex !== gameAreaIndex) return;
-
-      colorizeShipBorder(position, settings.shipLengths[shipIndex]);
+      const shipIndex = Number(draggedShip.dataset.index);
+      const legalShipPlacement = gameData.gameboards[
+        gameAreaIndex
+      ].legalShipPlacement(shipIndex, position);
+      colorizeShipBorder(
+        position,
+        settings.shipLengths[shipIndex],
+        gameAreaIndex,
+        legalShipPlacement
+      );
     }
     square.addEventListener('dragover', dragOverSquare);
+    square.addEventListener('dragleave', uncolorizeShipBorder);
 
-    function updateShipPosition(shipIndex, shipPosition) {
-      const ship = shipDiv(gameAreaIndex, shipIndex);
-      ship.style.position = 'absolute';
-
+    function updateShipPosition(shipPosition) {
+      draggedShip.classList.add('on-gameboard');
       const targetSquare = gameboardSquares.find(
         ({ position: targetPosition, gameAreaIndex: targetGameAreaIndex }) =>
           gameAreaIndex === targetGameAreaIndex &&
           equalsArray(shipPosition, targetPosition)
       ).square;
-      targetSquare.appendChild(ship);
+      targetSquare.appendChild(draggedShip);
     }
 
-    function dropShip(e) {
-      const [shipGameAreaIndex, shipIndex] = e.dataTransfer
-        .getData('text/plain')
-        .split(',')
-        .map(Number);
-      if (shipGameAreaIndex !== gameAreaIndex) return;
+    function dropShip() {
+      if (Number(draggedShip.dataset.gameAreaIndex) !== gameAreaIndex) return;
 
+      const shipIndex = Number(draggedShip.dataset.index);
       try {
         gameData.gameboards[gameAreaIndex].placeShip(shipIndex, position);
       } catch {
@@ -56,7 +58,6 @@ export default function enableGameboardDragAndDrop() {
       }
 
       updateShipPosition(
-        shipIndex,
         gameData.gameboards[gameAreaIndex].ships[shipIndex].position
       );
     }
@@ -64,27 +65,27 @@ export default function enableGameboardDragAndDrop() {
   });
 
   ships.forEach((ship) => {
-    function drag(e) {
-      e.dataTransfer.setData(
-        'text/plain',
-        `${ship.dataset.gameAreaIndex},${ship.dataset.index}`
-      );
+    function drag() {
+      ship.classList.add('hidden');
+    }
+    ship.addEventListener('drag', drag);
 
+    function dragStart(e) {
+      draggedShip = ship;
       const squareCenter = Number(ship.dataset.squareCenter);
       e.dataTransfer.setDragImage(ship, squareCenter, squareCenter);
+      ships.forEach((otherShip) => {
+        if (otherShip !== ship && otherShip.classList.contains('on-gameboard'))
+          otherShip.closest('.square').classList.add('with-background-ship');
+      });
     }
-    ship.addEventListener('dragstart', drag);
-
-    function dragOverShip(e) {
-      e.preventDefault();
-      e.dataTransfer.dropEffect = 'move';
-      ship.style.zIndex = 0;
-    }
-    ship.addEventListener('dragover', dragOverShip);
+    ship.addEventListener('dragstart', dragStart);
 
     function dragEnd() {
-      ships.forEach((dragEndShip) => {
-        dragEndShip.style.zIndex = 1;
+      ship.classList.remove('hidden');
+      uncolorizeShipBorder();
+      ships.forEach((otherShip) => {
+        otherShip.closest('.square')?.classList?.remove('with-background-ship');
       });
     }
     ship.addEventListener('dragend', dragEnd);

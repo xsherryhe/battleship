@@ -80,6 +80,36 @@ function drawShips(squareLength) {
   });
 }
 
+export function colorizeShipBorder(
+  [row, col],
+  shipLength,
+  gameboardIndex,
+  legal
+) {
+  const borderOffsets = [
+    [-1, 0],
+    [shipLength, 0],
+  ];
+  for (let i = -1; i <= shipLength; i += 1) borderOffsets.push([i, -1], [i, 1]);
+
+  borderOffsets
+    .map(([rowOffset, colOffset]) => [row + rowOffset, col + colOffset])
+    .filter((position) =>
+      position.every((coord) => coord >= 0 && coord < settings.gameboardLength)
+    )
+    .forEach(([borderRow, borderCol]) => {
+      const squareIndex = settings.gameboardLength * borderRow + borderCol;
+      dom.gameboardDivs[gameboardIndex].querySelector(
+        `.square[data-index="${squareIndex}"]`
+      ).style.backgroundColor = legal ? 'green' : 'red';
+    });
+}
+
+export function uncolorizeShipBorder() {
+  dom.gameboardSquareDivs().forEach((square) => {
+    square.style.backgroundColor = 'transparent';
+  });
+}
 
 export function drawGameAreas(nameLabels) {
   dom.gameboardLabelDivs.forEach((labelDiv, i) => {
