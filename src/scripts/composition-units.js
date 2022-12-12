@@ -104,6 +104,7 @@ function CollectionMoveable(
       throw new Error('This position is illegal!');
 
     collectionItem.position = clampedPosition;
+    return collectionItem.position;
   }
 
   function allPlaced() {
@@ -113,6 +114,7 @@ function CollectionMoveable(
   function rotate(collectionIndex) {
     const collectionItem = collection[collectionIndex];
     collectionItem.orientation = 1 - collectionItem.orientation;
+    return collectionItem.orientation;
   }
 
   function getRandomPosition() {

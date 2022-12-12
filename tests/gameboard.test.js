@@ -48,6 +48,13 @@ describe('gameboard', () => {
         expect(gameboard.ships[index].orientation).toBe(i % 2);
       }
     });
+
+    it('returns the new orientation of the ship at the index input', () => {
+      const gameboard = Gameboard();
+      const index = 3;
+      const orientation = 1;
+      expect(gameboard.rotateShip(index)).toBe(orientation);
+    });
   });
 
   describe('gameboard.placeShip', () => {
@@ -59,21 +66,26 @@ describe('gameboard', () => {
       expect(gameboard.ships[index].position).toEqual(coordinate);
     });
 
+    it('returns the new position of the ship at the index input', () => {
+      const gameboard = Gameboard();
+      const index = 3;
+      const position = [2, 3];
+      expect(gameboard.placeShip(index, position)).toEqual(position);
+    });
+
     it('places the ship vertically entirely within the gameboard', () => {
       const gameboard = Gameboard();
       const index = 1;
-      gameboard.placeShip(index, [8, 2]);
       const adjustedCoordinate = [6, 2];
-      expect(gameboard.ships[index].position).toEqual(adjustedCoordinate);
+      expect(gameboard.placeShip(index, [8, 2])).toEqual(adjustedCoordinate);
     });
 
     it('places the ship horizontally entirely within the gameboard', () => {
       const gameboard = Gameboard();
       const index = 0;
       gameboard.rotateShip(index);
-      gameboard.placeShip(index, [3, 9]);
       const adjustedCoordinate = [3, 5];
-      expect(gameboard.ships[index].position).toEqual(adjustedCoordinate);
+      expect(gameboard.placeShip(index, [3, 9])).toEqual(adjustedCoordinate);
     });
 
     it('throws an error if the coordinate input is on an occupied position', () => {
