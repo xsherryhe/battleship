@@ -1,18 +1,18 @@
 import { gameboardSquareDivs, shipDivs } from './dom-elements';
+import { gameView, highlightGameArea } from './views';
 import {
-  gameView,
   drawGameAreas,
   colorizeShipBorder,
   uncolorizeShipBorder,
-  showPlayGameButton,
-  highlightGameArea,
+  showChangedShipOrientation,
+  showErrorShipOrientation,
   showGameboardSetUpMessage,
-} from './views';
+  showGameboardSetUpChangePlayerButton,
+  showPlayGameButton,
+} from './views-gameboard-setup';
 import { gameData } from './game';
 import * as settings from './settings';
 import { equalsArray } from './utilities';
-
-let draggedShip;
 
 function updateGameboardSetUp() {
   const index = gameData.gameboards.findIndex(
@@ -24,6 +24,7 @@ function updateGameboardSetUp() {
 }
 
 function enableGameboardDragAndDrop() {
+  let draggedShip;
   const gameboardSquares = [...gameboardSquareDivs()].map((square) => ({
     square,
     position: [
@@ -34,6 +35,22 @@ function enableGameboardDragAndDrop() {
   }));
   const ships = shipDivs();
 
+  function updateShipPosition(
+    ship,
+    gameboardIndex = Number(ship.dataset.gameAreaIndex),
+    shipPosition = gameData.gameboards[gameboardIndex].ships[
+      Number(ship.dataset.index)
+    ].position
+  ) {
+    ship.classList.add('on-gameboard');
+    const targetSquare = gameboardSquares.find(
+      ({ position: targetPosition, gameAreaIndex: targetGameAreaIndex }) =>
+        gameboardIndex === targetGameAreaIndex &&
+        equalsArray(shipPosition, targetPosition)
+    ).square;
+    targetSquare.appendChild(ship);
+  }
+
   gameboardSquares.forEach(({ square, position, gameAreaIndex }) => {
     function dragOverSquare(e) {
       e.preventDefault();
@@ -41,11 +58,13 @@ function enableGameboardDragAndDrop() {
       if (Number(draggedShip.dataset.gameAreaIndex) !== gameAreaIndex) return;
 
       const shipIndex = Number(draggedShip.dataset.index);
+      const shipOrientation = Number(draggedShip.dataset.orientation);
       const legalShipPlacement = gameData.gameboards[
         gameAreaIndex
       ].legalShipPlacement(shipIndex, position);
       colorizeShipBorder(
         position,
+        shipOrientation,
         settings.shipLengths[shipIndex],
         gameAreaIndex,
         legalShipPlacement
@@ -53,16 +72,6 @@ function enableGameboardDragAndDrop() {
     }
     square.addEventListener('dragover', dragOverSquare);
     square.addEventListener('dragleave', uncolorizeShipBorder);
-
-    function updateShipPosition(shipPosition) {
-      draggedShip.classList.add('on-gameboard');
-      const targetSquare = gameboardSquares.find(
-        ({ position: targetPosition, gameAreaIndex: targetGameAreaIndex }) =>
-          gameAreaIndex === targetGameAreaIndex &&
-          equalsArray(shipPosition, targetPosition)
-      ).square;
-      targetSquare.appendChild(draggedShip);
-    }
 
     function dropShip() {
       if (Number(draggedShip.dataset.gameAreaIndex) !== gameAreaIndex) return;
@@ -74,10 +83,9 @@ function enableGameboardDragAndDrop() {
         return;
       }
 
-      updateShipPosition(
-        gameData.gameboards[gameAreaIndex].ships[shipIndex].position
-      );
-      updateGameboardSetUp();
+      updateShipPosition(draggedShip);
+      if (gameData.gameboards[gameAreaIndex].allShipsPlaced())
+        showGameboardSetUpChangePlayerButton();
     }
     square.addEventListener('drop', dropShip);
   });
@@ -90,7 +98,7 @@ function enableGameboardDragAndDrop() {
 
     function dragStart(e) {
       draggedShip = ship;
-      const squareCenter = Number(ship.dataset.squareCenter);
+      const squareCenter = Number(ship.dataset.squareLength) / 2;
       e.dataTransfer.setDragImage(ship, squareCenter, squareCenter);
       ships.forEach((otherShip) => {
         if (otherShip !== ship && otherShip.classList.contains('on-gameboard'))
@@ -107,6 +115,25 @@ function enableGameboardDragAndDrop() {
       });
     }
     ship.addEventListener('dragend', dragEnd);
+
+    function rotateShip() {
+      const [gameAreaIndex, shipIndex] = ['gameAreaIndex', 'index'].map(
+        (attribute) => Number(ship.dataset[attribute])
+      );
+      const shipPosition =
+        gameData.gameboards[gameAreaIndex].ships[shipIndex].position;
+
+      try {
+        gameData.gameboards[gameAreaIndex].rotateShip(shipIndex);
+      } catch {
+        showErrorShipOrientation(ship, shipPosition);
+        return;
+      }
+
+      if (shipPosition) updateShipPosition(ship);
+      showChangedShipOrientation(ship);
+    }
+    ship.querySelector('button.rotate').addEventListener('click', rotateShip);
   });
 }
 

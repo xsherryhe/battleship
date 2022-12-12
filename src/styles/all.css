@@ -31,12 +31,25 @@
   transform: translateZ(-1px);
 }
 
+.square.legal-border {
+  background-color: green;
+}
+
+.square.error-border {
+  background-color: rgba(255, 0, 0, 0.5);
+}
+
 .ships {
-  display: flex;
+  display: grid;
+  justify-content: center;
+  grid-template-columns: repeat(3, max-content);
+  align-items: center;
   gap: 1rem;
 }
 
 .ship {
+  position: relative;
+  grid-column-end: span 1;
   display: grid;
   z-index: 1;
 }
@@ -47,7 +60,14 @@
 
 .ship-square.full {
   background-color: black;
+}
+
+.ship[data-orientation="0"] .ship-square.full {
   grid-column: 1 / span 2;
+}
+
+.ship[data-orientation="1"] .ship-square.full {
+  grid-row: 1 / span 2;
 }
 
 .ship-square.top-left {
@@ -55,9 +75,18 @@
   grid-column: 1;
 }
 
+.ship[data-orientation="1"] .ship-square.top-left {
+  grid-row: 1;
+}
+
 .ship-square.top-right {
   background-image: linear-gradient(to bottom left, transparent 50%, black 50%);
   grid-column: 2;
+}
+
+.ship[data-orientation="1"] .ship-square.top-right {
+  grid-column: -2;
+  grid-row: 1;
 }
 
 .ship-square.bottom-left {
@@ -65,9 +94,30 @@
   grid-column: 1;
 }
 
+.ship[data-orientation="1"] .ship-square.bottom-left {
+  grid-row: 2;
+}
+
 .ship-square.bottom-right {
   background-image: linear-gradient(to bottom right, black 50%, transparent 50%);
   grid-column: 2;
+}
+
+.ship[data-orientation="1"] .ship-square.bottom-right {
+  grid-column: -2;
+  grid-row: 2;
+}
+
+.ship button.rotate {
+  grid-row: 1;
+  grid-column: 3 / span 2;
+  justify-self: center;
+  align-self: center;
+}
+
+.ship[data-orientation="1"] button.rotate {
+  grid-row: 3 / span 2;
+  grid-column: 1;
 }
 
 .disabled * {

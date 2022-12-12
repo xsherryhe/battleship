@@ -1,4 +1,3 @@
-import * as settings from './settings';
 import * as dom from './dom-elements';
 
 function hideAllViews() {
@@ -35,98 +34,6 @@ export function gameView() {
   dom.gameView.classList.remove('hidden');
 }
 
-function drawGameboards(squareLength, gameboardLength) {
-  dom.gameboardDivs.forEach((gameboardDiv) => {
-    gameboardDiv.style.display = 'grid';
-    gameboardDiv.style.gridTemplate = `repeat(${gameboardLength}, ${squareLength}px) / repeat(${gameboardLength}, ${squareLength}px)`;
-
-    for (let i = 0; i < gameboardLength ** 2; i += 1)
-      gameboardDiv.insertAdjacentHTML(
-        'beforeend',
-        `<div class="square" data-index="${i}"></div>`
-      );
-  });
-}
-
-function shipTemplate(squareLength, shipLength, shipIndex, gameAreaIndex) {
-  let template = `<div style="display: grid; grid-template: repeat(${shipLength}, ${squareLength}px) / repeat(2, ${
-    squareLength / 2
-  }px);" class="ship" data-game-area-index="${gameAreaIndex}" data-index="${shipIndex}" data-square-center="${
-    squareLength / 2
-  }" draggable="true">`;
-  for (let i = 0; i < shipLength; i += 1) {
-    if (i === 0) {
-      template += `<div class="ship-square top-left"></div>`;
-      template += `<div class="ship-square top-right"></div>`;
-    } else if (i === shipLength - 1) {
-      template += `<div class="ship-square bottom-left"></div>`;
-      template += `<div class="ship-square bottom-right"></div>`;
-    } else {
-      template += `<div class="ship-square full"></div>`;
-    }
-  }
-  template += '</div>';
-  return template;
-}
-
-function drawShips(squareLength) {
-  dom.shipsDivs.forEach((shipsDiv, gameAreaIndex) => {
-    settings.shipLengths.forEach((shipLength, shipIndex) => {
-      shipsDiv.insertAdjacentHTML(
-        'beforeend',
-        shipTemplate(squareLength, shipLength, shipIndex, gameAreaIndex)
-      );
-    });
-  });
-}
-
-export function colorizeShipBorder(
-  [row, col],
-  shipLength,
-  gameboardIndex,
-  legal
-) {
-  const borderOffsets = [
-    [-1, 0],
-    [shipLength, 0],
-  ];
-  for (let i = -1; i <= shipLength; i += 1) borderOffsets.push([i, -1], [i, 1]);
-
-  borderOffsets
-    .map(([rowOffset, colOffset]) => [row + rowOffset, col + colOffset])
-    .filter((position) =>
-      position.every((coord) => coord >= 0 && coord < settings.gameboardLength)
-    )
-    .forEach(([borderRow, borderCol]) => {
-      const squareIndex = settings.gameboardLength * borderRow + borderCol;
-      dom.gameboardDivs[gameboardIndex].querySelector(
-        `.square[data-index="${squareIndex}"]`
-      ).style.backgroundColor = legal ? 'green' : 'rgba(255, 0, 0, 0.5)';
-    });
-}
-
-export function uncolorizeShipBorder() {
-  dom.gameboardSquareDivs().forEach((square) => {
-    square.style.backgroundColor = 'transparent';
-  });
-}
-
-export function drawGameAreas(nameLabels) {
-  dom.gameboardLabelDivs.forEach((labelDiv, i) => {
-    labelDiv.textContent = `${nameLabels[i]}'s Shipyard`;
-  });
-
-  const squareLength =
-    Math.min(window.innerHeight, window.innerWidth) /
-    (2.25 * settings.gameboardLength);
-  drawGameboards(squareLength, settings.gameboardLength);
-  drawShips(squareLength);
-}
-
-export function showGameboardSetUpMessage(name) {
-  dom.gameMessage.textContent = `${name}, place your ships.`;
-}
-
 export function highlightGameArea(gameAreaIndex) {
   dom.gameAreaDivs.forEach((gameArea, i) => {
     const ships = gameArea.querySelectorAll('.ship');
@@ -139,5 +46,3 @@ export function highlightGameArea(gameAreaIndex) {
     }
   });
 }
-
-export function showPlayGameButton() {}
