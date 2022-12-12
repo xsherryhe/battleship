@@ -27,3 +27,5 @@ export const shipDiv = (gameAreaIndex, shipIndex) =>
   document.querySelector(
     `.game .ship[data-game-area-index="${gameAreaIndex}"][data-index="${shipIndex}"]`
   );
+export const rotateShipButtons = () =>
+  document.querySelectorAll('.ship button.rotate');

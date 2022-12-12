@@ -1,5 +1,5 @@
-import { modeSelectionButtons, playerSetUpForm } from './dom-elements';
 import startGameboardSetUp from './dom-events-gameboard-setup';
+import { modeSelectionButtons, playerSetUpForm } from './dom-elements';
 import { gameData, initializeGame } from './game';
 import * as settings from './settings';
 import { modeSelectionView, playerSetUpView } from './views';
