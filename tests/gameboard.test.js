@@ -55,6 +55,61 @@ describe('gameboard', () => {
       const orientation = 1;
       expect(gameboard.rotateShip(index)).toBe(orientation);
     });
+
+    it('places the ship entirely within the gameboard after being rotated to horizontal', () => {
+      const gameboard = Gameboard();
+      const index = 1;
+      gameboard.placeShip(index, [5, 8]);
+      gameboard.rotateShip(index);
+      const adjustedCoordinate = [5, 6];
+      expect(gameboard.ships[index].position).toEqual(adjustedCoordinate);
+    });
+
+    it('places the ship entirely within the gameboard after being rotated to vertical', () => {
+      const gameboard = Gameboard();
+      const index = 0;
+      gameboard.rotateShip(index);
+      gameboard.placeShip(index, [9, 1]);
+      gameboard.rotateShip(index);
+      const adjustedCoordinate = [5, 1];
+      expect(gameboard.ships[index].position).toEqual(adjustedCoordinate);
+    });
+
+    it('throws an error if the ship area after rotating is on an occupied position', () => {
+      const gameboard = Gameboard();
+      gameboard.placeShip(0, [1, 2]);
+      gameboard.placeShip(1, [2, 0]);
+      expect(() => gameboard.rotateShip(1)).toThrow('position is illegal');
+    });
+
+    it('does not change the ship orientation if the ship area after rotating is on an occupied position', () => {
+      const gameboard = Gameboard();
+      gameboard.placeShip(0, [1, 2]);
+      gameboard.placeShip(1, [2, 0]);
+      try {
+        gameboard.rotateShip(1);
+      } catch {
+        expect(gameboard.ships[1].orientation).toBe(0);
+      }
+    });
+
+    it('throws an error if the ship area after rotating is next to an occupied position', () => {
+      const gameboard = Gameboard();
+      gameboard.placeShip(0, [3, 6]);
+      gameboard.placeShip(1, [2, 4]);
+      expect(() => gameboard.rotateShip(1)).toThrow('position is illegal');
+    });
+
+    it('does not change the ship orientation if the ship area after rotating is next to an occupied position', () => {
+      const gameboard = Gameboard();
+      gameboard.placeShip(0, [3, 6]);
+      gameboard.placeShip(1, [2, 4]);
+      try {
+        gameboard.rotateShip(1);
+      } catch {
+        expect(gameboard.ships[1].orientation).toBe(0);
+      }
+    });
   });
 
   describe('gameboard.placeShip', () => {

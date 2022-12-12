@@ -114,6 +114,14 @@ function CollectionMoveable(
   function rotate(collectionIndex) {
     const collectionItem = collection[collectionIndex];
     collectionItem.orientation = 1 - collectionItem.orientation;
+    if (collectionItem.position)
+      try {
+        place(collectionIndex, collectionItem.position);
+      } catch (error) {
+        rotate(collectionIndex);
+        throw error;
+      }
+
     return collectionItem.orientation;
   }
 
