@@ -211,11 +211,11 @@ export function Attackable(attacks, { attackItemName } = {}) {
   }
 
   function receiveAttack(position) {
-    attacks.push(position);
-    let success = true;
+    let hit = true;
     if (attackItemName)
-      success = sendAttackToItems(this[`${attackItemName}s`], position);
-    return success;
+      hit = sendAttackToItems(this[`${attackItemName}s`], position);
+    attacks.push({ position, hit });
+    return hit;
   }
 
   return { attacks, receiveAttack };

@@ -273,11 +273,11 @@ describe('gameboard', () => {
   });
 
   describe('gameboard.attacks', () => {
-    it('is an array of coordinates that have been attacked', () => {
+    it('is an array of objects containing coordinates that have been attacked and whether the attacks hit a ship', () => {
       const attacks = [
-        [0, 1],
-        [5, 6],
-        [9, 4],
+        { position: [0, 1], hit: true },
+        { position: [5, 6], hit: false },
+        { position: [9, 4], hit: true },
       ];
       const gameboard = Gameboard({ attacks });
       expect(gameboard.attacks).toEqual(attacks);
@@ -285,13 +285,6 @@ describe('gameboard', () => {
   });
 
   describe('gameboard.receiveAttack', () => {
-    it('pushes the coordinate input to gameboard.attacks', () => {
-      const gameboard = Gameboard();
-      const coordinate = [2, 7];
-      gameboard.receiveAttack(coordinate);
-      expect(gameboard.attacks).toContain(coordinate);
-    });
-
     it('calls ship.hit on a ship positioned at the coordinate input', () => {
       const gameboard = Gameboard();
       const { ship } = gameboard.ships[0];
@@ -322,14 +315,36 @@ describe('gameboard', () => {
       expect(attack).toBe(true);
     });
 
-    it('returns false if a ship was not hit', () => {
+    it('pushes the coordinate input with a hit value of true to gameboard.attacks if a ship was hit', () => {
       const gameboard = Gameboard();
       const { ship } = gameboard.ships[0];
       ship.hit = jest.fn();
 
+      gameboard.placeShip(0, [1, 7]);
+      const coordinate = [2, 7];
+      gameboard.receiveAttack(coordinate);
+      expect(gameboard.attacks).toContainEqual({
+        position: coordinate,
+        hit: true,
+      });
+    });
+
+    it('returns false if a ship was not hit', () => {
+      const gameboard = Gameboard();
       gameboard.placeShip(0, [2, 9]);
       const attack = gameboard.receiveAttack([1, 7]);
       expect(attack).toBe(false);
+    });
+
+    it('pushes the coordinate input with a hit value of false to gameboard.attacks if a ship was not hit', () => {
+      const gameboard = Gameboard();
+      gameboard.placeShip(0, [2, 8]);
+      const coordinate = [3, 5];
+      gameboard.receiveAttack(coordinate);
+      expect(gameboard.attacks).toContainEqual({
+        position: coordinate,
+        hit: false,
+      });
     });
   });
 
