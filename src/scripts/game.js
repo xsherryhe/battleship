@@ -73,22 +73,19 @@ export function currPlayer() {
   return gameData.players[gameData.currPlayerIndex];
 }
 
-export function playGame({
-  currentTurnTaken = false,
-  currentTurnOver = false,
-} = {}) {
-  let gameTurnTaken = currentTurnTaken;
-  let gameTurnOver = currentTurnOver;
+export function turnOver() {
+  const { attacks } = currGameboard();
+  return attacks?.[attacks.length - 1] && !attacks[attacks.length - 1].hit;
+}
+
+export function playGame(tookTurn = false) {
+  let turnTaken = tookTurn;
   while (!gameData.gameOver) {
-    const { turnTaken, turnOver } = currPlayer().takeTurn(currGameboard());
-    gameTurnTaken ||= turnTaken;
-    gameTurnOver ||= turnOver;
+    turnTaken ||= currPlayer().takeTurn(currGameboard());
+    if (!turnTaken) break;
 
     gameData.gameOver = getGameOver();
-
-    if (!gameTurnTaken) break;
-    if (gameTurnOver) gameData.currPlayerIndex = 1 - gameData.currPlayerIndex;
-    gameTurnTaken = false;
-    gameTurnOver = false;
+    if (turnOver()) gameData.currPlayerIndex = 1 - gameData.currPlayerIndex;
+    turnTaken = false;
   }
 }

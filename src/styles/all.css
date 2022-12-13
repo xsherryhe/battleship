@@ -31,6 +31,14 @@
   transform: translateZ(-1px);
 }
 
+.square.hit {
+  color: red;
+}
+
+.square.miss {
+  color: black;
+}
+
 .square.legal-border {
   background-color: green;
 }

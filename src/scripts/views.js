@@ -57,6 +57,16 @@ export function highlightGameArea(gameAreaIndex, ownGameArea = false) {
   });
 }
 
+export function showAttack(square, success) {
+  square.classList.add(success ? 'hit' : 'miss');
+  square.textContent = success ? 'X' : 'O';
+}
+
 export function hideStartGameButton() {
   dom.startGameButton.classList.add('hidden');
+}
+
+export function passDeviceView() {
+  hideAllViews();
+  dom.passDeviceView.classList.remove('hidden');
 }

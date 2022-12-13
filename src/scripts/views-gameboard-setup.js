@@ -128,6 +128,8 @@ export function showStartGame() {
   dom.gameAreaDivs.forEach((gameArea) => gameArea.classList.add('disabled'));
   dom.shipDivs().forEach((ship) => {
     ship.classList.add('hidden');
+    const square = ship.closest('.square');
+    if (square) square.classList.add('with-background-ship');
     ship.draggable = false;
   });
   dom.rotateShipButtons().forEach((button) => button.classList.add('hidden'));
