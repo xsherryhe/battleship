@@ -250,10 +250,10 @@ export function Attacking({ auto = false } = {}) {
 
 export function TurnTaking({ method = '' } = {}) {
   function takeTurn(data) {
-    if (!method) return false;
-
-    this[method](data);
-    return true;
+    return {
+      turnTaken: Boolean(method),
+      turnOver: method ? !this[method](data) : false,
+    };
   }
 
   return { takeTurn };

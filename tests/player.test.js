@@ -73,9 +73,14 @@ describe('humanPlayer', () => {
   });
 
   describe('humanPlayer.takeTurn', () => {
-    it('returns false', () => {
+    it('returns a turnTaken value of false', () => {
       const humanPlayer = HumanPlayer();
-      expect(humanPlayer.takeTurn()).toBe(false);
+      expect(humanPlayer.takeTurn().turnTaken).toBe(false);
+    });
+
+    it('returns a turnOver value of false', () => {
+      const humanPlayer = HumanPlayer();
+      expect(humanPlayer.takeTurn().turnOver).toBe(false);
     });
   });
 });
@@ -171,17 +176,26 @@ describe('computerPlayer', () => {
   });
 
   describe('computerPlayer.takeTurn', () => {
+    const gameboard = {};
     const computerPlayer = ComputerPlayer();
-    computerPlayer.autoAttack = jest.fn();
-
-    it('returns something truthy', () => {
-      expect(computerPlayer.takeTurn()).toBeTruthy();
-    });
+    computerPlayer.autoAttack = jest.fn(() => true);
 
     it('calls computerPlayer.autoAttack on the gameboard input', () => {
-      const gameboard = {};
       computerPlayer.takeTurn(gameboard);
       expect(computerPlayer.autoAttack).toHaveBeenCalledWith(gameboard);
+    });
+
+    it('returns a turnTaken value of true', () => {
+      expect(computerPlayer.takeTurn(gameboard).turnTaken).toBe(true);
+    });
+
+    it('returns a turnOver value of false if computerPlayer.autoAttack returns true', () => {
+      expect(computerPlayer.takeTurn(gameboard).turnOver).toBe(false);
+    });
+
+    it('returns a turnOver value of true if computerPlayer.autoAttack returns false', () => {
+      computerPlayer.autoAttack.mockReturnValueOnce(false);
+      expect(computerPlayer.takeTurn(gameboard).turnOver).toBe(true);
     });
   });
 });

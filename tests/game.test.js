@@ -163,7 +163,7 @@ describe('playGame', () => {
   beforeEach(() => {
     initializeGame();
     gameData.players.forEach((player) => {
-      player.takeTurn = jest.fn(() => false);
+      player.takeTurn = jest.fn(() => ({ turnTaken: false, turnOver: false }));
     });
     gameData.gameboards.forEach((gameboard) => {
       gameboard.allSunk = jest.fn();
@@ -175,56 +175,90 @@ describe('playGame', () => {
     expect(gameData.players[1].takeTurn).not.toHaveBeenCalled();
   });
 
-  it('calls takeTurn for the next player on the opposing gameboard if the current player took a turn externally', () => {
-    playGame(true);
+  it('calls takeTurn for the current player on the opposing gameboard if the current player took a turn externally but did not complete their turn', () => {
+    playGame({ currentTurnTaken: true, currentTurnOver: false });
+    expect(gameData.players[0].takeTurn).toHaveBeenCalledWith(
+      gameData.gameboards[1]
+    );
+  });
+
+  it('calls takeTurn for the next player on the opposing gameboard if the current player completed a turn externally', () => {
+    playGame({ currentTurnTaken: true, currentTurnOver: true });
     expect(gameData.players[1].takeTurn).toHaveBeenCalledWith(
       gameData.gameboards[0]
     );
   });
 
-  it('calls takeTurn for the next player on the opposing gameboard if the current player took a turn internally', () => {
-    gameData.players[0].takeTurn = jest.fn(() => true);
+  it('calls takeTurn for the current player on the opposing gameboard if the current player took a turn internally but did not complete their turn', () => {
+    gameData.players[0].takeTurn
+      .mockImplementationOnce(() => ({
+        turnTaken: true,
+        turnOver: false,
+      }))
+      .mockImplementationOnce(() => ({
+        turnTaken: true,
+        turnOver: true,
+      }));
+
+    playGame();
+    expect(gameData.players[0].takeTurn.mock.calls).toEqual([
+      [gameData.gameboards[1]],
+      [gameData.gameboards[1]],
+    ]);
+  });
+
+  it('calls takeTurn for the next player on the opposing gameboard if the current player completed a turn internally', () => {
+    gameData.players[0].takeTurn = jest.fn(() => ({
+      turnTaken: true,
+      turnOver: true,
+    }));
     playGame();
     expect(gameData.players[1].takeTurn).toHaveBeenCalledWith(
       gameData.gameboards[0]
     );
   });
 
-  it('calls takeTurn for alternating players for as long as they continue to take turns', () => {
+  it('calls takeTurn for alternating players for as long as they continue to complete turns', () => {
     function takeTurnExpectation(iteration, playerIndex) {
       expect(gameData.players[playerIndex].takeTurn).toHaveBeenCalledTimes(
         iteration
       );
     }
 
-    gameData.players[0].takeTurn = jest.fn(() => true);
+    gameData.players[0].takeTurn = jest.fn(() => ({
+      turnTaken: true,
+      turnOver: true,
+    }));
     gameData.players[1].takeTurn
       .mockImplementationOnce(() => {
         takeTurnExpectation(1, 0);
         takeTurnExpectation(1, 1);
-        return true;
+        return { turnTaken: true, turnOver: true };
       })
       .mockImplementationOnce(() => {
         takeTurnExpectation(2, 0);
         takeTurnExpectation(2, 1);
-        return true;
+        return { turnTaken: true, turnOver: true };
       })
       .mockImplementationOnce(() => {
         takeTurnExpectation(3, 0);
         takeTurnExpectation(3, 1);
-        return true;
+        return { turnTaken: true, turnOver: true };
       })
       .mockImplementationOnce(() => {
         takeTurnExpectation(4, 0);
         takeTurnExpectation(4, 1);
-        return false;
+        return { turnTaken: true, turnOver: true };
       });
 
     playGame();
   });
 
   it('sets game-over to be true if one of the gameboards has all ships sunk', () => {
-    gameData.players[0].takeTurn = jest.fn(() => true);
+    gameData.players[0].takeTurn = jest.fn(() => ({
+      turnTaken: true,
+      turnOver: true,
+    }));
     gameData.gameboards[0].allSunk = jest.fn(() => true);
     playGame();
     expect(gameData.gameOver).toBe(true);
@@ -233,7 +267,10 @@ describe('playGame', () => {
   it('sets game-over to be true if a turn causes one of the gameboards to have all ships sunk', () => {
     gameData.players[0].takeTurn = jest.fn(() => {
       gameData.gameboards[0].allSunk = jest.fn(() => true);
-      return true;
+      return {
+        turnTaken: true,
+        turnOver: false,
+      };
     });
 
     playGame();
@@ -241,18 +278,24 @@ describe('playGame', () => {
   });
 
   it('does not set game-over to be true if none of the gameboards have all ships sunk', () => {
-    gameData.players[0].takeTurn = jest.fn(() => true);
+    gameData.players[0].takeTurn = jest.fn(() => ({
+      turnTaken: true,
+      turnOver: true,
+    }));
     playGame();
     expect(gameData.gameOver).toBe(false);
   });
 
   it('stops calling takeTurn once one of the gameboards has all ships sunk', () => {
-    gameData.players[0].takeTurn = jest.fn(() => true);
+    gameData.players[0].takeTurn = jest.fn(() => ({
+      turnTaken: true,
+      turnOver: true,
+    }));
     gameData.players[1].takeTurn
-      .mockImplementationOnce(() => true)
+      .mockImplementationOnce(() => ({ turnTaken: true, turnOver: true }))
       .mockImplementationOnce(() => {
         gameData.gameboards[0].allSunk = jest.fn(() => true);
-        return true;
+        return { turnTaken: true, turnOver: true };
       });
 
     playGame();
