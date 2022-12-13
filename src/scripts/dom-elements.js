@@ -29,3 +29,7 @@ export const shipDiv = (gameAreaIndex, shipIndex) =>
   );
 export const rotateShipButtons = () =>
   document.querySelectorAll('.ship button.rotate');
+export const updateGameboardSetUpButton = document.querySelector(
+  'button.update-gameboard-set-up'
+);
+export const startGameButton = document.querySelector('button.start-game');

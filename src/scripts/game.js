@@ -17,20 +17,8 @@ function initializeModes(modes) {
   gameData.modes = gameModes;
 }
 
-function initializeGameboards(length, shipLengths) {
-  gameData.gameboards = [...new Array(2)].map(() =>
-    Gameboard({ length, shipLengths })
-  );
-  if (gameData.modes.playerMode) return;
-
-  const computerPlayerIndex = gameData.players.findIndex(
-    (player) => player.type === 'computerPlayer'
-  );
-  gameData.gameboards[computerPlayerIndex].autoPlaceShips();
-}
-
 function initializePlayers() {
-  if (gameData.modes.playerMode) {
+  if (gameData.modes.playerMode === 1) {
     gameData.players = [...new Array(2)].map(() => HumanPlayer());
   } else {
     gameData.players = [];
@@ -38,6 +26,19 @@ function initializePlayers() {
     gameData.players[humanPlayerIndex] = HumanPlayer();
     gameData.players[1 - humanPlayerIndex] = ComputerPlayer();
   }
+}
+
+export function computerIndex() {
+  return gameData.players.findIndex(
+    (player) => player.type === 'computerPlayer'
+  );
+}
+
+function initializeGameboards(length, shipLengths) {
+  gameData.gameboards = [...new Array(2)].map(() =>
+    Gameboard({ length, shipLengths })
+  );
+  gameData.gameboards[computerIndex()]?.autoPlaceShips();
 }
 
 function initializePlayerIndex() {

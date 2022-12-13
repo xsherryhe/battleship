@@ -34,15 +34,29 @@ export function gameView() {
   dom.gameView.classList.remove('hidden');
 }
 
-export function highlightGameArea(gameAreaIndex) {
+export function showMessage(message) {
+  dom.gameMessage.textContent = message;
+}
+
+export function highlightGameArea(gameAreaIndex, ownGameArea = false) {
   dom.gameAreaDivs.forEach((gameArea, i) => {
     const ships = gameArea.querySelectorAll('.ship');
     if (i !== gameAreaIndex) {
       gameArea.classList.add('disabled');
-      ships.forEach((ship) => ship.classList.add('hidden'));
+      ships.forEach((ship) => {
+        if (ownGameArea) ship.classList.add('hidden');
+        else ship.classList.remove('hidden');
+      });
     } else {
       gameArea.classList.remove('disabled');
-      ships.forEach((ship) => ship.classList.remove('hidden'));
+      ships.forEach((ship) => {
+        if (ownGameArea) ship.classList.remove('hidden');
+        else ship.classList.add('hidden');
+      });
     }
   });
+}
+
+export function hideStartGameButton() {
+  dom.startGameButton.classList.add('hidden');
 }

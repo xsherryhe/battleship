@@ -124,3 +124,24 @@
   color: gray;
   border-color: lightgray;
 }
+
+.disabled .ship-square.full {
+  background-color: gray;
+}
+
+.disabled .ship-square.top-left {
+  background-image: linear-gradient(to bottom right, transparent 50%, gray 50%);
+  grid-column: 1;
+}
+
+.disabled .ship-square.top-right {
+  background-image: linear-gradient(to bottom left, transparent 50%, gray 50%);
+}
+
+.disabled .ship-square.bottom-left {
+  background-image: linear-gradient(to bottom left, gray 50%, transparent 50%);
+}
+
+.disabled .ship-square.bottom-right {
+  background-image: linear-gradient(to bottom right, gray 50%, transparent 50%);
+}

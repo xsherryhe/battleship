@@ -2,32 +2,38 @@ import {
   gameboardSquareDivs,
   shipDivs,
   rotateShipButtons,
+  updateGameboardSetUpButton,
 } from './dom-elements';
-import { gameView, highlightGameArea } from './views';
+import { gameView, highlightGameArea, showMessage } from './views';
 import {
   drawGameAreas,
   colorizeShipBorder,
   uncolorizeShipBorder,
   showChangedShipOrientation,
   showErrorShipOrientation,
-  showGameboardSetUpMessage,
-  showGameboardSetUpChangePlayerButton,
-  showPlayGameButton,
+  showUpdateGameboardSetUpButton,
+  hideUpdateGameboardSetUpButton,
+  showStartGame,
 } from './views-gameboard-setup';
 import { gameData } from './game';
 import * as settings from './settings';
 import { equalsArray } from './utilities';
 
-function enableGameboardSetUpEvents() {
-  const gameboardSquares = [...gameboardSquareDivs()].map((square) => ({
-    square,
-    position: [
-      Math.floor(square.dataset.index / 10),
-      square.dataset.index % 10,
-    ],
-    gameAreaIndex: Number(square.closest('.game-area').dataset.index),
-  }));
+export const gameboardSquares = [];
+function populateGameboardSquares() {
+  [...gameboardSquareDivs()].forEach((square, i) => {
+    gameboardSquares[i] = {
+      square,
+      position: [
+        Math.floor(square.dataset.index / 10),
+        square.dataset.index % 10,
+      ],
+      gameAreaIndex: Number(square.closest('.game-area').dataset.index),
+    };
+  });
+}
 
+function enableGameboardSetUpEvents() {
   function updateShipPosition(
     ship,
     gameboardIndex = Number(ship.dataset.gameAreaIndex),
@@ -80,7 +86,7 @@ function enableGameboardSetUpEvents() {
 
         updateShipPosition(draggedShip);
         if (gameData.gameboards[gameAreaIndex].allShipsPlaced())
-          showGameboardSetUpChangePlayerButton();
+          showUpdateGameboardSetUpButton();
       }
       square.addEventListener('drop', dropOnSquare);
     });
@@ -144,17 +150,25 @@ function enableGameboardSetUpEvents() {
 }
 
 function updateGameboardSetUp() {
+  hideUpdateGameboardSetUpButton();
+
   const index = gameData.gameboards.findIndex(
     (gameboard) => !gameboard.allShipsPlaced()
   );
-  if (index < 0) showPlayGameButton();
-  highlightGameArea(index);
-  showGameboardSetUpMessage(gameData.players[index].name);
+  if (index < 0) {
+    showStartGame();
+    return;
+  }
+
+  highlightGameArea(index, true);
+  showMessage(`${gameData.players[index].name}, place your ships.`);
 }
+updateGameboardSetUpButton.addEventListener('click', updateGameboardSetUp);
 
 export default function startGameboardSetUp() {
   gameView();
   drawGameAreas(gameData.players.map((player) => player.name));
+  populateGameboardSquares();
   enableGameboardSetUpEvents();
   updateGameboardSetUp();
 }

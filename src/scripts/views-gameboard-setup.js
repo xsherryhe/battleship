@@ -1,5 +1,6 @@
 import * as settings from './settings';
 import * as dom from './dom-elements';
+import { showMessage } from './views';
 
 function drawGameboards(squareLength, gameboardLength) {
   dom.gameboardDivs.forEach((gameboardDiv) => {
@@ -115,12 +116,22 @@ export function drawGameAreas(nameLabels) {
   drawShips(squareLength);
 }
 
-export function showGameboardSetUpMessage(name) {
-  dom.gameMessage.textContent = `${name}, place your ships.`;
+export function showUpdateGameboardSetUpButton() {
+  dom.updateGameboardSetUpButton.classList.remove('hidden');
 }
 
-export function showGameboardSetUpChangePlayerButton() {
-  console.log('show button');
+export function hideUpdateGameboardSetUpButton() {
+  dom.updateGameboardSetUpButton.classList.add('hidden');
 }
 
-export function showPlayGameButton() {}
+export function showStartGame() {
+  dom.gameAreaDivs.forEach((gameArea) => gameArea.classList.add('disabled'));
+  dom.shipDivs().forEach((ship) => {
+    ship.classList.add('hidden');
+    ship.draggable = false;
+  });
+  dom.rotateShipButtons().forEach((button) => button.classList.add('hidden'));
+
+  showMessage('Click the Start button to begin the game!');
+  dom.startGameButton.classList.remove('hidden');
+}
