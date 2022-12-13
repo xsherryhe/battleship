@@ -200,15 +200,22 @@ export function Nameable(name) {
 
 export function Attackable(attacks, { attackItemName } = {}) {
   function sendAttackToItems(attackItems, position) {
-    attackItems.forEach((attackItem) => {
-      if (includesArray(position, attackItem.area()))
+    for (let i = 0; i < attackItems.length; i += 1) {
+      const attackItem = attackItems[i];
+      if (includesArray(position, attackItem.area())) {
         attackItem[attackItemName].hit();
-    });
+        return true;
+      }
+    }
+    return false;
   }
 
   function receiveAttack(position) {
     attacks.push(position);
-    if (attackItemName) sendAttackToItems(this[`${attackItemName}s`], position);
+    let success = true;
+    if (attackItemName)
+      success = sendAttackToItems(this[`${attackItemName}s`], position);
+    return success;
   }
 
   return { attacks, receiveAttack };
@@ -225,7 +232,7 @@ function AutoAttacking() {
     let position = randomAttackPosition(target);
     while (includesArray(position, target.attacks || []))
       position = randomAttackPosition(target);
-    this.attack(target, position);
+    return this.attack(target, position);
   }
 
   return { autoAttack };
@@ -235,7 +242,7 @@ export function Attacking({ auto = false } = {}) {
   function attack(target, position) {
     if (includesArray(position, target.attacks || []))
       throw new Error('That position has already been attacked!');
-    target.receiveAttack(position);
+    return target.receiveAttack(position);
   }
 
   return { attack, ...(auto ? AutoAttacking() : {}) };

@@ -311,6 +311,26 @@ describe('gameboard', () => {
       gameboard.receiveAttack([1, 4]);
       expect(ship.hit).not.toHaveBeenCalled();
     });
+
+    it('returns true if a ship was hit', () => {
+      const gameboard = Gameboard();
+      const { ship } = gameboard.ships[0];
+      ship.hit = jest.fn();
+
+      gameboard.placeShip(0, [3, 6]);
+      const attack = gameboard.receiveAttack([5, 6]);
+      expect(attack).toBe(true);
+    });
+
+    it('returns false if a ship was not hit', () => {
+      const gameboard = Gameboard();
+      const { ship } = gameboard.ships[0];
+      ship.hit = jest.fn();
+
+      gameboard.placeShip(0, [2, 9]);
+      const attack = gameboard.receiveAttack([1, 7]);
+      expect(attack).toBe(false);
+    });
   });
 
   describe('gameboard.allSunk', () => {

@@ -35,6 +35,22 @@ describe('humanPlayer', () => {
       expect(gameboard.receiveAttack).toHaveBeenCalledWith(coordinate);
     });
 
+    it('returns true if gameboard.receiveAttack returns true', () => {
+      const humanPlayer = HumanPlayer();
+      const gameboard = { receiveAttack: jest.fn(() => true) };
+      const coordinate = [9, 2];
+      const attack = humanPlayer.attack(gameboard, coordinate);
+      expect(attack).toBe(true);
+    });
+
+    it('returns false if gameboard.receiveAttack returns false', () => {
+      const humanPlayer = HumanPlayer();
+      const gameboard = { receiveAttack: jest.fn(() => false) };
+      const coordinate = [2, 5];
+      const attack = humanPlayer.attack(gameboard, coordinate);
+      expect(attack).toBe(false);
+    });
+
     it('throws an error if the coordinate input has already been attacked', () => {
       const humanPlayer = HumanPlayer();
       const gameboard = { attacks: [[2, 5]], receiveAttack: jest.fn() };
@@ -89,6 +105,22 @@ describe('computerPlayer', () => {
       computerPlayer.attack(gameboard, coordinate);
       expect(gameboard.receiveAttack).toHaveBeenCalledWith(coordinate);
     });
+
+    it('returns true if gameboard.receiveAttack returns true', () => {
+      const computerPlayer = ComputerPlayer();
+      const gameboard = { receiveAttack: jest.fn(() => true) };
+      const coordinate = [7, 4];
+      const attack = computerPlayer.attack(gameboard, coordinate);
+      expect(attack).toBe(true);
+    });
+
+    it('returns false if gameboard.receiveAttack returns false', () => {
+      const computerPlayer = ComputerPlayer();
+      const gameboard = { receiveAttack: jest.fn(() => false) };
+      const coordinate = [8, 5];
+      const attack = computerPlayer.attack(gameboard, coordinate);
+      expect(attack).toBe(false);
+    });
   });
 
   describe('computerPlayer.autoAttack', () => {
@@ -117,6 +149,24 @@ describe('computerPlayer', () => {
       const coordinate = [0, 1];
       computerPlayer.autoAttack(gameboard);
       expect(gameboard.receiveAttack.mock.calls[0][0]).toEqual(coordinate);
+    });
+
+    it('returns true if gameboard.receiveAttack returns true', () => {
+      const computerPlayer = ComputerPlayer();
+      const length = 7;
+      const gameboard = { length, receiveAttack: jest.fn(() => true) };
+      const coordinate = [0, 6];
+      const attack = computerPlayer.autoAttack(gameboard, coordinate);
+      expect(attack).toBe(true);
+    });
+
+    it('returns false if gameboard.receiveAttack returns false', () => {
+      const computerPlayer = ComputerPlayer();
+      const length = 8;
+      const gameboard = { length, receiveAttack: jest.fn(() => false) };
+      const coordinate = [7, 5];
+      const attack = computerPlayer.autoAttack(gameboard, coordinate);
+      expect(attack).toBe(false);
     });
   });
 
