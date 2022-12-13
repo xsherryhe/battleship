@@ -221,39 +221,46 @@ export function Attackable(attacks, { attackItemName } = {}) {
   return { attacks, receiveAttack };
 }
 
-function AutoAttacking() {
-  function randomAttackPosition(target) {
-    return [...new Array(2)].map(() =>
-      Math.floor(Math.random() * target.length)
-    );
-  }
-
-  function autoAttack(target) {
-    let position = randomAttackPosition(target);
-    while (includesArray(position, target.attacks || []))
-      position = randomAttackPosition(target);
-    return this.attack(target, position);
-  }
-
-  return { autoAttack };
-}
-
 export function Attacking({ auto = false } = {}) {
+  function alreadyAttacked(target, position) {
+    const previousPositions = (target.attacks || []).map(
+      (previousAttack) => previousAttack.position
+    );
+    return includesArray(position, previousPositions);
+  }
+
   function attack(target, position) {
-    if (includesArray(position, target.attacks || []))
+    if (alreadyAttacked(target, position))
       throw new Error('That position has already been attacked!');
     return target.receiveAttack(position);
+  }
+
+  function AutoAttacking() {
+    function randomAttackPosition(target) {
+      return [...new Array(2)].map(() =>
+        Math.floor(Math.random() * target.length)
+      );
+    }
+
+    function autoAttack(target) {
+      let position = randomAttackPosition(target);
+      while (alreadyAttacked(target, position))
+        position = randomAttackPosition(target);
+      return this.attack(target, position);
+    }
+
+    return { autoAttack };
   }
 
   return { attack, ...(auto ? AutoAttacking() : {}) };
 }
 
-export function TurnTaking({ method = '' } = {}) {
+export function TurnTaking({ method = null } = {}) {
   function takeTurn(data) {
-    return {
-      turnTaken: Boolean(method),
-      turnOver: method ? !this[method](data) : false,
-    };
+    if (!method) return false;
+
+    this[method](data);
+    return true;
   }
 
   return { takeTurn };

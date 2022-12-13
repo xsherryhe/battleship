@@ -53,7 +53,10 @@ describe('humanPlayer', () => {
 
     it('throws an error if the coordinate input has already been attacked', () => {
       const humanPlayer = HumanPlayer();
-      const gameboard = { attacks: [[2, 5]], receiveAttack: jest.fn() };
+      const gameboard = {
+        attacks: [{ position: [2, 5] }],
+        receiveAttack: jest.fn(),
+      };
       const coordinate = [2, 5];
       expect(() => humanPlayer.attack(gameboard, coordinate)).toThrow(
         'position has already been attacked'
@@ -62,7 +65,10 @@ describe('humanPlayer', () => {
 
     it('does not call gameboard.receiveAttack if the coordinate input has already been attacked', () => {
       const humanPlayer = HumanPlayer();
-      const gameboard = { attacks: [[1, 8]], receiveAttack: jest.fn() };
+      const gameboard = {
+        attacks: [{ position: [1, 8] }],
+        receiveAttack: jest.fn(),
+      };
       const coordinate = [1, 8];
       try {
         humanPlayer.attack(gameboard, coordinate);
@@ -73,14 +79,8 @@ describe('humanPlayer', () => {
   });
 
   describe('humanPlayer.takeTurn', () => {
-    it('returns a turnTaken value of false', () => {
-      const humanPlayer = HumanPlayer();
-      expect(humanPlayer.takeTurn().turnTaken).toBe(false);
-    });
-
-    it('returns a turnOver value of false', () => {
-      const humanPlayer = HumanPlayer();
-      expect(humanPlayer.takeTurn().turnOver).toBe(false);
+    it('returns false', () => {
+      expect(HumanPlayer().takeTurn()).toBe(false);
     });
   });
 });
@@ -145,9 +145,9 @@ describe('computerPlayer', () => {
       const gameboard = {
         length: 2,
         attacks: [
-          [0, 0],
-          [1, 0],
-          [1, 1],
+          { position: [0, 0] },
+          { position: [1, 0] },
+          { position: [1, 1] },
         ],
         receiveAttack: jest.fn(),
       };
@@ -185,17 +185,8 @@ describe('computerPlayer', () => {
       expect(computerPlayer.autoAttack).toHaveBeenCalledWith(gameboard);
     });
 
-    it('returns a turnTaken value of true', () => {
-      expect(computerPlayer.takeTurn(gameboard).turnTaken).toBe(true);
-    });
-
-    it('returns a turnOver value of false if computerPlayer.autoAttack returns true', () => {
-      expect(computerPlayer.takeTurn(gameboard).turnOver).toBe(false);
-    });
-
-    it('returns a turnOver value of true if computerPlayer.autoAttack returns false', () => {
-      computerPlayer.autoAttack.mockReturnValueOnce(false);
-      expect(computerPlayer.takeTurn(gameboard).turnOver).toBe(true);
+    it('returns true', () => {
+      expect(computerPlayer.takeTurn(gameboard)).toBe(true);
     });
   });
 });
