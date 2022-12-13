@@ -33,6 +33,14 @@ function populateGameboardSquares() {
   });
 }
 
+export function findGameboardSquare(gameAreaIndex, position) {
+  return gameboardSquares.find(
+    ({ position: targetPosition, gameAreaIndex: targetGameAreaIndex }) =>
+      gameAreaIndex === targetGameAreaIndex &&
+      equalsArray(position, targetPosition)
+  ).square;
+}
+
 function enableGameboardSetUpEvents() {
   function updateShipPosition(
     ship,
@@ -42,11 +50,7 @@ function enableGameboardSetUpEvents() {
     ].position
   ) {
     ship.classList.add('on-gameboard');
-    const targetSquare = gameboardSquares.find(
-      ({ position: targetPosition, gameAreaIndex: targetGameAreaIndex }) =>
-        gameboardIndex === targetGameAreaIndex &&
-        equalsArray(shipPosition, targetPosition)
-    ).square;
+    const targetSquare = findGameboardSquare(gameboardIndex, shipPosition);
     targetSquare.appendChild(ship);
   }
 
