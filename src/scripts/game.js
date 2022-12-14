@@ -77,6 +77,10 @@ export function currPlayer() {
   return gameData.players[gameData.currPlayerIndex];
 }
 
+export function validTurn(gameboardIndex) {
+  return !gameData.gameOver && gameboardIndex === 1 - gameData.currPlayerIndex;
+}
+
 export function turnOver() {
   const { attacks } = currGameboard();
   return attacks?.[attacks.length - 1] && !attacks[attacks.length - 1].hit;

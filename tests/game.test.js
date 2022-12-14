@@ -7,6 +7,7 @@ import {
   gameData,
   computerIndex,
   humanIndex,
+  validTurn,
 } from '../src/scripts/game';
 import Gameboard from '../src/scripts/gameboard';
 import { HumanPlayer, ComputerPlayer } from '../src/scripts/player';
@@ -175,6 +176,24 @@ describe('currPlayer', () => {
     initializeGame();
     gameData.currPlayerIndex = 1;
     expect(currPlayer()).toBe(gameData.players[1]);
+  });
+});
+
+describe('validTurn', () => {
+  it('returns false if the game is over', () => {
+    initializeGame();
+    gameData.gameOver = true;
+    expect(validTurn(1)).toBe(false);
+  });
+
+  it('returns false if the gameboard index input is not the index of the current gameboard', () => {
+    initializeGame();
+    expect(validTurn(0)).toBe(false);
+  });
+
+  it('returns true if the game is not over and the gameboard index input matches the current gameboard', () => {
+    initializeGame();
+    expect(validTurn(1)).toBe(true);
   });
 });
 
