@@ -96,7 +96,10 @@ export function hideResetGameButton() {
   dom.resetGameButton.classList.add('hidden');
 }
 
-export function passDeviceView() {
+export function passDeviceView(playerName, playerIndex) {
   hideAllViews();
   dom.passDeviceView.classList.remove('hidden');
+  dom.passDevicePlayerSpan.textContent = `${playerName || 'the next player'}${
+    playerIndex !== undefined ? ` (Player ${playerIndex + 1})` : ''
+  }`;
 }

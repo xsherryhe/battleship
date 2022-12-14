@@ -42,6 +42,9 @@ export const startGameButton = document.querySelector('button.start-game');
 export const resetGameButton = document.querySelector('button.reset-game');
 
 export const passDeviceView = document.querySelector('section.pass-device');
+export const passDevicePlayerSpan = document.querySelector(
+  '.pass-device span.pass-device-player'
+);
 export const passDeviceContinueButton = document.querySelector(
   '.pass-device button.pass-device-continue'
 );

@@ -141,7 +141,7 @@ function displayGame(displayAutoTurn = true) {
 function displayTransition() {
   if (gameData.modes.playerMode === 1 && turnOver())
     setTimeout(() => {
-      passDeviceView();
+      passDeviceView(currPlayer().name, gameData.currPlayerIndex);
       displayGame();
     }, 1000);
 }
@@ -171,6 +171,9 @@ function startGame() {
   hideStartGameButton();
   showRemainingShips(settings.shipLengths.length);
   enableGameboardEvents();
+
+  if (gameData.modes.playerMode === 1)
+    passDeviceView(gameData.players[0].name, 0);
   displayGame();
   playGame();
 }

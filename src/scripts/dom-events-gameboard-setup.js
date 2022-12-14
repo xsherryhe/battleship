@@ -172,10 +172,11 @@ function updateGameboardSetUp() {
     return;
   }
 
+  const playerName = gameData.players[index].name;
   highlightGameArea(index, true);
-  showMessage(`${gameData.players[index].name}, place your ships.`);
+  showMessage(`${playerName}, place your ships.`);
   if (currGameboardSetUpIndex >= 0 && index !== currGameboardSetUpIndex)
-    passDeviceView();
+    passDeviceView(playerName, index);
   currGameboardSetUpIndex = index;
 }
 updateGameboardSetUpButton.addEventListener('click', updateGameboardSetUp);
