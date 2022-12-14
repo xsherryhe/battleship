@@ -57,9 +57,17 @@ export function highlightGameArea(gameAreaIndex, ownGameArea = false) {
   });
 }
 
+export function unhighlightGameAreas() {
+  dom.gameAreaDivs.forEach((gameArea) => gameArea.classList.add('disabled'));
+}
+
 export function showAttack(square, success) {
-  square.classList.add(success ? 'hit' : 'miss');
-  square.textContent = success ? 'X' : 'O';
+  if (square.classList.contains('attacked')) return;
+  square.classList.add(success ? 'hit' : 'miss', 'attacked');
+  square.insertAdjacentHTML(
+    'beforeend',
+    `<p class="marker">${success ? 'X' : 'O'}</p>`
+  );
 }
 
 export function hideStartGameButton() {

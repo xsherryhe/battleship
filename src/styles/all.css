@@ -129,8 +129,11 @@
 }
 
 .disabled * {
-  color: gray;
   border-color: lightgray;
+}
+
+.disabled .gameboard-label {
+  color: gray;
 }
 
 .disabled .ship-square.full {
@@ -139,7 +142,6 @@
 
 .disabled .ship-square.top-left {
   background-image: linear-gradient(to bottom right, transparent 50%, gray 50%);
-  grid-column: 1;
 }
 
 .disabled .ship-square.top-right {
