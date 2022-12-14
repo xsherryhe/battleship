@@ -110,6 +110,7 @@ export function drawGameAreas(nameLabels) {
   dom.gameboardLabelDivs.forEach((labelDiv, i) => {
     labelDiv.textContent = `${nameLabels[i]}'s Shipyard`;
   });
+  dom.remainingShipsDivs.forEach((div) => div.classList.add('hidden'));
 
   const squareLength =
     Math.min(window.innerHeight, window.innerWidth) /

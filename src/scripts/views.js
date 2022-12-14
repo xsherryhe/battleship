@@ -73,6 +73,17 @@ export function showAttack(square, success) {
   );
 }
 
+export function showRemainingShips(ships) {
+  dom.remainingShipsDivs.forEach((div) => div.classList.remove('hidden'));
+  dom.remainingShipsSpans.forEach((span) => {
+    span.textContent = ships;
+  });
+}
+
+export function showRemainingShipsCount(gameAreaIndex, ships) {
+  dom.remainingShipsSpans[gameAreaIndex].textContent = ships;
+}
+
 export function hideStartGameButton() {
   dom.startGameButton.classList.add('hidden');
 }

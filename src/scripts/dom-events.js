@@ -34,6 +34,8 @@ import {
   unhighlightGameAreas,
   showResetGameButton,
   hideResetGameButton,
+  showRemainingShipsCount,
+  showRemainingShips,
 } from './views';
 
 function resetGame() {
@@ -102,6 +104,12 @@ function updateAttacks() {
   });
 }
 
+function updateRemainingShips() {
+  gameData.gameboards.forEach((gameboard, i) =>
+    showRemainingShipsCount(i, gameboard.notSunkShips())
+  );
+}
+
 function displayGameOver(displayAutoTurn = true) {
   const display =
     gameData.gameOver &&
@@ -113,6 +121,7 @@ function displayGameOver(displayAutoTurn = true) {
   }
 }
 
+// TO DO: Remaining ships counter
 function displayGame(displayAutoTurn = true) {
   const player =
     (turnOver() && displayAutoTurn && gameData.players[computerIndex()]) ||
@@ -121,8 +130,11 @@ function displayGame(displayAutoTurn = true) {
 
   showMessage(`${player.name}'s turn...`);
   highlightGameArea(1 - gameData.players.indexOf(player), autoTurn);
+
   updateAttacks();
   if (autoTurn) updateAutoAttacks();
+  updateRemainingShips();
+
   displayGameOver(displayAutoTurn);
 }
 
@@ -157,6 +169,7 @@ function enableGameboardEvents() {
 
 function startGame() {
   hideStartGameButton();
+  showRemainingShips(settings.shipLengths.length);
   enableGameboardEvents();
   displayGame();
   playGame();

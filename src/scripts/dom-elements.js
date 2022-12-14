@@ -21,6 +21,12 @@ export const gameboardLabelDivs = document.querySelectorAll(
 export const gameboardDivs = document.querySelectorAll('.game .gameboard');
 export const gameboardSquareDivs = () =>
   document.querySelectorAll('.game .gameboard .square');
+export const remainingShipsDivs = document.querySelectorAll(
+  '.game div.remaining-ships'
+);
+export const remainingShipsSpans = document.querySelectorAll(
+  '.game span.remaining-ships-counter'
+);
 export const shipsDivs = document.querySelectorAll('.game .ships');
 export const shipDivs = () => document.querySelectorAll('.game .ship');
 export const shipDiv = (gameAreaIndex, shipIndex) =>

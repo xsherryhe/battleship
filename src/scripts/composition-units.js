@@ -63,7 +63,7 @@ function CollectionMoveable(
         [1, 1],
         [1, -1],
         [-1, 1],
-        [-1, 1],
+        [-1, -1],
       ]
         .map(([rowOffset, colOffset]) => [row + rowOffset, col + colOffset])
         .filter((borderingPosition) => !includesArray(borderingPosition, area));
