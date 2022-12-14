@@ -136,7 +136,6 @@ function displayTransition() {
 
 function enableGameboardEvents() {
   gameboardSquares.forEach(({ square, position, gameAreaIndex }) => {
-    // TO DO: computer intelligence, reset game button
     function takeTurn() {
       if (gameAreaDivs[gameAreaIndex].classList.contains('disabled')) return;
       if (!validTurn(gameAreaIndex)) return;

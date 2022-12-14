@@ -1,4 +1,4 @@
-import { capitalize, includesArray } from './utilities';
+import { capitalize, equalsArray, includesArray } from './utilities';
 
 export function Lengthable(length) {
   return { length };
@@ -242,11 +242,59 @@ export function Attacking({ auto = false } = {}) {
       );
     }
 
+    function validPosition(target, position) {
+      return (
+        position &&
+        position.every(
+          (coordinate) => coordinate >= 0 && coordinate < target.length
+        )
+      );
+    }
+
+    const missPositions = [];
+    function updateMissPositions([row, col]) {
+      [
+        [-1, -1],
+        [-1, 1],
+        [1, -1],
+        [1, 1],
+      ].forEach(([rowOffset, colOffset]) => {
+        missPositions.push([row + rowOffset, col + colOffset]);
+      });
+    }
+
+    const nextAttackPositions = [];
+    function updateNextAttackPositions([row, col]) {
+      const offsets = [
+        [-1, 0],
+        [1, 0],
+        [0, -1],
+        [0, 1],
+      ];
+      while (offsets.length) {
+        const randomIndex = Math.floor(Math.random() * offsets.length);
+        const [rowOffset, colOffset] = offsets.splice(randomIndex, 1)[0];
+        nextAttackPositions.push([row + rowOffset, col + colOffset]);
+      }
+    }
+
+    function updatePositionData(position) {
+      updateMissPositions(position);
+      updateNextAttackPositions(position);
+    }
+
     function autoAttack(target) {
-      let position = randomAttackPosition(target);
-      while (alreadyAttacked(target, position))
-        position = randomAttackPosition(target);
-      return this.attack(target, position);
+      let position;
+      while (
+        !validPosition(target, position) ||
+        includesArray(position, missPositions) ||
+        alreadyAttacked(target, position)
+      )
+        position = nextAttackPositions.pop() || randomAttackPosition(target);
+
+      const success = this.attack(target, position);
+      if (success) updatePositionData(position);
+      return success;
     }
 
     return { autoAttack };

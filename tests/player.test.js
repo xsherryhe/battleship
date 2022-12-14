@@ -129,7 +129,7 @@ describe('computerPlayer', () => {
   });
 
   describe('computerPlayer.autoAttack', () => {
-    it('selects a random position within the gameboard input to attack', () => {
+    it('selects a position within the gameboard input to attack', () => {
       const computerPlayer = ComputerPlayer();
       const length = 5;
       const gameboard = { length, receiveAttack: jest.fn() };
@@ -154,6 +154,51 @@ describe('computerPlayer', () => {
       const coordinate = [0, 1];
       computerPlayer.autoAttack(gameboard);
       expect(gameboard.receiveAttack.mock.calls[0][0]).toEqual(coordinate);
+    });
+
+    it('selects a position adjacent to a successful hit if possible', () => {
+      const computerPlayer = ComputerPlayer();
+      const gameboard = { length: 8, receiveAttack: jest.fn(() => true) };
+
+      computerPlayer.autoAttack(gameboard);
+      computerPlayer.autoAttack(gameboard);
+
+      const positions = gameboard.receiveAttack.mock.calls.map(
+        (call) => call[0]
+      );
+      const offset = positions[0].map((coord, i) => coord - positions[1][i]);
+      const offsets = [
+        [-1, 0],
+        [1, 0],
+        [0, -1],
+        [0, 1],
+      ];
+
+      expect(offsets).toContainEqual(offset);
+    });
+
+    it('selects a position adjacent to and in the same direction as a line of successful hits', () => {
+      const computerPlayer = ComputerPlayer();
+      const gameboard = {
+        length: 9,
+        attacks: [],
+        receiveAttack: jest.fn((position) => {
+          gameboard.attacks.push({ position, hit: true });
+          return true;
+        }),
+      };
+
+      for (let i = 0; i < 3; i += 1) computerPlayer.autoAttack(gameboard);
+      const positions = gameboard.receiveAttack.mock.calls.map(
+        (call) => call[0]
+      );
+      const offset = (position1, position2) =>
+        position1.map((coord, i) => coord - position2[i]);
+      const firstOffset = offset(positions[0], positions[1]);
+      const doubleFirstOffset = firstOffset.map((coord) => coord * 2);
+
+      expect(offset(positions[1], positions[2])).toEqual(firstOffset);
+      expect(offset(positions[0], positions[2])).toEqual(doubleFirstOffset);
     });
 
     it('returns true if gameboard.receiveAttack returns true', () => {
