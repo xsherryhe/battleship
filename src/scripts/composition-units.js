@@ -157,7 +157,7 @@ export function Collectionable(
   collectionData,
   collectionItemName,
   collectionItemFactory,
-  { moveable = false, allMethodNames = [] } = {}
+  { moveable = false, allMethodNames = [], countMethodNames = [] } = {}
 ) {
   const collection = collectionData.map((data) => ({
     [collectionItemName]: collectionItemFactory(data),
@@ -177,9 +177,36 @@ export function Collectionable(
     };
   }, {});
 
+  const countMethods = countMethodNames.reduce((methods, method) => {
+    const capitalizedMethod = capitalize(method);
+    const capitalizedCollectionItem = capitalize(collectionItemName);
+    function countMethod(boolean) {
+      return collection.filter(
+        (collectionItem) =>
+          collectionItem[collectionItemName][`is${capitalizedMethod}`]() ===
+          boolean
+      ).length;
+    }
+
+    function countYesMethod() {
+      return countMethod(true);
+    }
+
+    function countNoMethod() {
+      return countMethod(false);
+    }
+
+    return {
+      ...methods,
+      [`${method}${capitalizedCollectionItem}s`]: countYesMethod,
+      [`not${capitalizedMethod}${capitalizedCollectionItem}s`]: countNoMethod,
+    };
+  }, {});
+
   return {
     [`${collectionItemName}s`]: collection,
     ...allMethods,
+    ...countMethods,
     ...(moveable
       ? CollectionMoveable(
           collection,

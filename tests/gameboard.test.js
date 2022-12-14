@@ -348,15 +348,37 @@ describe('gameboard', () => {
     });
   });
 
+  describe('gameboard.sunkShips', () => {
+    it('returns the number of gameboard ships that have been sunk', () => {
+      const gameboard = Gameboard();
+      const sunkShips = 3;
+      gameboard.ships.forEach((shipItem, i) => {
+        shipItem.ship.isSunk = jest.fn(() => i < sunkShips);
+      });
+      expect(gameboard.sunkShips()).toBe(sunkShips);
+    });
+  });
+
+  describe('gameboard.notSunkShips', () => {
+    it('returns the number of gameboard ships that have been sunk', () => {
+      const gameboard = Gameboard();
+      const notSunkShips = 3;
+      gameboard.ships.forEach((shipItem, i) => {
+        shipItem.ship.isSunk = jest.fn(() => i >= notSunkShips);
+      });
+      expect(gameboard.notSunkShips()).toBe(notSunkShips);
+    });
+  });
+
   describe('gameboard.allSunk', () => {
     it('returns false if not all gameboard ships are sunk', () => {
       const gameboard = Gameboard();
       const [sunkShip, ...ships] = gameboard.ships.map(
         (shipItem) => shipItem.ship
       );
-      sunkShip.isSunk = jest.fn().mockReturnValue(true);
+      sunkShip.isSunk = jest.fn(() => true);
       ships.forEach((ship) => {
-        ship.isSunk = jest.fn().mockReturnValue(false);
+        ship.isSunk = jest.fn(() => false);
       });
 
       expect(gameboard.allSunk()).toBe(false);
@@ -365,7 +387,7 @@ describe('gameboard', () => {
     it('returns true if all gameboard ships are sunk', () => {
       const gameboard = Gameboard();
       gameboard.ships.forEach((shipItem) => {
-        shipItem.ship.isSunk = jest.fn().mockReturnValue(true);
+        shipItem.ship.isSunk = jest.fn(() => true);
       });
 
       expect(gameboard.allSunk()).toBe(true);

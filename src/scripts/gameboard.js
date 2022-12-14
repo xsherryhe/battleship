@@ -13,7 +13,11 @@ export default function Gameboard({
       shipLengths.map((shipLength) => Lengthable(shipLength)),
       'ship',
       Ship,
-      { moveable: { areaLength: length }, allMethodNames: ['sunk'] }
+      {
+        moveable: { areaLength: length },
+        allMethodNames: ['sunk'],
+        countMethodNames: ['sunk'],
+      }
     ),
     ...Attackable(attacks, { attackItemName: 'ship' }),
   };
