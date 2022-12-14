@@ -28,12 +28,6 @@ function initializePlayers() {
   }
 }
 
-export function computerIndex() {
-  return gameData.players.findIndex(
-    (player) => player.type === 'computerPlayer'
-  );
-}
-
 function initializeGameboards(length, shipLengths) {
   gameData.gameboards = [...new Array(2)].map(() =>
     Gameboard({ length, shipLengths })
@@ -63,6 +57,16 @@ export function initializeGame({
   initializeGameboards(gameboardLength, shipLengths);
   initializePlayerIndex();
   initializeGameOver();
+}
+
+export function computerIndex() {
+  return gameData.players.findIndex(
+    (player) => player.type === 'computerPlayer'
+  );
+}
+
+export function humanIndex() {
+  return 1 - computerIndex();
 }
 
 export function currGameboard() {

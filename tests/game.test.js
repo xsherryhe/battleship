@@ -5,6 +5,8 @@ import {
   turnOver,
   playGame,
   gameData,
+  computerIndex,
+  humanIndex,
 } from '../src/scripts/game';
 import Gameboard from '../src/scripts/gameboard';
 import { HumanPlayer, ComputerPlayer } from '../src/scripts/player';
@@ -141,6 +143,22 @@ describe('initializeGame', () => {
         expect(gameboard.autoPlaceShips).not.toHaveBeenCalled();
       });
     });
+  });
+});
+
+describe('computerIndex', () => {
+  it('returns the index of the computer player', () => {
+    initializeGame();
+    const type = 'computerPlayer';
+    expect(gameData.players[computerIndex()].type).toBe(type);
+  });
+});
+
+describe('humanIndex', () => {
+  it('returns the index of the human player in one-player mode', () => {
+    initializeGame();
+    const type = 'humanPlayer';
+    expect(gameData.players[humanIndex()].type).toBe(type);
   });
 });
 
