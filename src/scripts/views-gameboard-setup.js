@@ -10,7 +10,7 @@ function drawGameboards(squareLength, gameboardLength) {
     for (let i = 0; i < gameboardLength ** 2; i += 1)
       gameboardDiv.insertAdjacentHTML(
         'beforeend',
-        `<div class="square" data-index="${i}"></div>`
+        `<button class="square" data-index="${i}"></button>`
       );
   });
 }

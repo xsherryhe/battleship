@@ -21,6 +21,9 @@
 .square {
   border: 0.05rem solid black;
   position: relative;
+  background-color: transparent;
+  padding: 0;
+  display: flex;
 }
 
 .square.with-background-ship {
