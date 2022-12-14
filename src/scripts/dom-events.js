@@ -18,6 +18,7 @@ import {
   computerIndex,
   humanIndex,
   turnOver,
+  validTurn,
 } from './game';
 import * as settings from './settings';
 import {
@@ -126,13 +127,17 @@ function displayTransition() {
 
 function enableGameboardEvents() {
   gameboardSquares.forEach(({ square, position, gameAreaIndex }) => {
-    // TO DO: Error handling for already attacked positions, computer intelligence
+    // TO DO: computer intelligence
     function takeTurn() {
-      if (gameData.gameOver) return;
       if (gameAreaDivs[gameAreaIndex].classList.contains('disabled')) return;
-      if (gameAreaIndex !== 1 - gameData.currPlayerIndex) return;
+      if (!validTurn(gameAreaIndex)) return;
 
-      currPlayer().attack(currGameboard(), position);
+      try {
+        currPlayer().attack(currGameboard(), position);
+      } catch {
+        return;
+      }
+
       displayGame();
       displayTransition();
       playGame(true);
