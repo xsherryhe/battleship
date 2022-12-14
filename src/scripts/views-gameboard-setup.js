@@ -6,6 +6,7 @@ function drawGameboards(squareLength, gameboardLength) {
   dom.gameboardDivs.forEach((gameboardDiv) => {
     gameboardDiv.style.display = 'grid';
     gameboardDiv.style.gridTemplate = `repeat(${gameboardLength}, ${squareLength}px) / repeat(${gameboardLength}, ${squareLength}px)`;
+    gameboardDiv.textContent = '';
 
     for (let i = 0; i < gameboardLength ** 2; i += 1)
       gameboardDiv.insertAdjacentHTML(
@@ -36,6 +37,7 @@ function shipTemplate(squareLength, shipLength, shipIndex, gameAreaIndex) {
 
 function drawShips(squareLength) {
   dom.shipsDivs.forEach((shipsDiv, gameAreaIndex) => {
+    shipsDiv.textContent = '';
     settings.shipLengths.forEach((shipLength, shipIndex) => {
       shipsDiv.insertAdjacentHTML(
         'beforeend',

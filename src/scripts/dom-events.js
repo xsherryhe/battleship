@@ -8,6 +8,7 @@ import {
   modeSelectionButtons,
   playerSetUpForm,
   startGameButton,
+  resetGameButton,
 } from './dom-elements';
 import {
   currPlayer,
@@ -31,9 +32,16 @@ import {
   showMessage,
   showAttack,
   unhighlightGameAreas,
+  showResetGameButton,
+  hideResetGameButton,
 } from './views';
 
-window.addEventListener('load', modeSelectionView);
+function resetGame() {
+  hideResetGameButton();
+  modeSelectionView();
+}
+window.addEventListener('load', resetGame);
+resetGameButton.addEventListener('click', resetGame);
 
 function submitMode(e) {
   initializeGame({
@@ -101,6 +109,7 @@ function displayGameOver(displayAutoTurn = true) {
   if (display) {
     showMessage(`Game over! ${currPlayer().name} wins.`);
     unhighlightGameAreas();
+    showResetGameButton();
   }
 }
 
@@ -127,7 +136,7 @@ function displayTransition() {
 
 function enableGameboardEvents() {
   gameboardSquares.forEach(({ square, position, gameAreaIndex }) => {
-    // TO DO: computer intelligence
+    // TO DO: computer intelligence, reset game button
     function takeTurn() {
       if (gameAreaDivs[gameAreaIndex].classList.contains('disabled')) return;
       if (!validTurn(gameAreaIndex)) return;

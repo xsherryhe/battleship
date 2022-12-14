@@ -22,6 +22,9 @@ export function playerSetUpView(playerMaxIndex) {
   hideAllViews();
   dom.playerSetUpView.classList.remove('hidden');
 
+  dom.playerSetUpForm
+    .querySelectorAll('.field')
+    .forEach((field) => field.remove());
   for (let i = playerMaxIndex; i >= 0; i -= 1)
     dom.playerSetUpForm.insertAdjacentHTML(
       'afterBegin',
@@ -72,6 +75,14 @@ export function showAttack(square, success) {
 
 export function hideStartGameButton() {
   dom.startGameButton.classList.add('hidden');
+}
+
+export function showResetGameButton() {
+  dom.resetGameButton.classList.remove('hidden');
+}
+
+export function hideResetGameButton() {
+  dom.resetGameButton.classList.add('hidden');
 }
 
 export function passDeviceView() {
