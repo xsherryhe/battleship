@@ -4,7 +4,12 @@ import {
   rotateShipButtons,
   updateGameboardSetUpButton,
 } from './dom-elements';
-import { gameView, highlightGameArea, showMessage } from './views';
+import {
+  gameView,
+  highlightGameArea,
+  showMessage,
+  passDeviceView,
+} from './views';
 import {
   drawGameAreas,
   colorizeShipBorder,
@@ -41,16 +46,19 @@ export function findGameboardSquare(gameAreaIndex, position) {
   ).square;
 }
 
+let currGameboardSetUpIndex = -1;
 function enableGameboardSetUpEvents() {
   function updateShipPosition(
     ship,
-    gameboardIndex = Number(ship.dataset.gameAreaIndex),
-    shipPosition = gameData.gameboards[gameboardIndex].ships[
+    shipPosition = gameData.gameboards[currGameboardSetUpIndex].ships[
       Number(ship.dataset.index)
     ].position
   ) {
     ship.classList.add('on-gameboard');
-    const targetSquare = findGameboardSquare(gameboardIndex, shipPosition);
+    const targetSquare = findGameboardSquare(
+      currGameboardSetUpIndex,
+      shipPosition
+    );
     targetSquare.appendChild(ship);
   }
 
@@ -60,7 +68,7 @@ function enableGameboardSetUpEvents() {
       function dragOverSquare(e) {
         e.preventDefault();
         e.dataTransfer.dropEffect = 'move';
-        if (Number(draggedShip.dataset.gameAreaIndex) !== gameAreaIndex) return;
+        if (currGameboardSetUpIndex !== gameAreaIndex) return;
 
         const shipIndex = Number(draggedShip.dataset.index);
         const shipOrientation = Number(draggedShip.dataset.orientation);
@@ -79,7 +87,7 @@ function enableGameboardSetUpEvents() {
       square.addEventListener('dragleave', uncolorizeShipBorder);
 
       function dropOnSquare() {
-        if (Number(draggedShip.dataset.gameAreaIndex) !== gameAreaIndex) return;
+        if (currGameboardSetUpIndex !== gameAreaIndex) return;
 
         const shipIndex = Number(draggedShip.dataset.index);
         try {
@@ -166,6 +174,9 @@ function updateGameboardSetUp() {
 
   highlightGameArea(index, true);
   showMessage(`${gameData.players[index].name}, place your ships.`);
+  if (currGameboardSetUpIndex >= 0 && index !== currGameboardSetUpIndex)
+    passDeviceView();
+  currGameboardSetUpIndex = index;
 }
 updateGameboardSetUpButton.addEventListener('click', updateGameboardSetUp);
 
