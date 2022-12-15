@@ -1,8 +1,22 @@
 .player-set-up {
+  margin-top: 10vh;
   display: flex;
   justify-content: center;
 }
 
 .player-set-up form {
+  padding: 1rem;
+  border-radius: 0.2rem;
+  border: var(--border);
+  box-shadow: var(--box-shadow);
+  background-color: var(--dark-secondary-color);
   align-items: center;
+}
+
+.player-set-up.player-set-up form button {
+  background-color: var(--tertiary-color);
+}
+
+.player-set-up.player-set-up form button:hover {
+  background-color: var(--dark-tertiary-color);
 }

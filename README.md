@@ -7,4 +7,7 @@ This project is currently in progress.
 Image credits:
 
   1. Material Design Icons: https://materialdesignicons.com/  
-    a. rotate-right
+    a. rotate-right  
+    b. anchor  
+    c. account  
+    d. account-multiple

@@ -177,7 +177,9 @@ function updateGameboardSetUp() {
 
   const playerName = gameData.players[index].name;
   highlightGameArea(index, true);
-  showMessage(`${playerName} (Player ${index + 1}), place your ships.`);
+  showMessage(
+    `${playerName} (Player ${index + 1}), place your ships. Drag and drop them!`
+  );
   if (currGameboardSetUpIndex >= 0 && index !== currGameboardSetUpIndex)
     passDeviceView(playerName, index);
   currGameboardSetUpIndex = index;

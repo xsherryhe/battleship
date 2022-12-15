@@ -1,5 +1,5 @@
 .mode-selection {
-  margin-top: 10vh;
+  margin-top: 5vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -7,5 +7,14 @@
 }
 
 .mode-selection.mode-selection button {
+  font-size: 1.5rem;
   padding: 1rem 2rem;
+  min-width: 20rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.mode-selection.mode-selection button img {
+  width: 8rem;
 }

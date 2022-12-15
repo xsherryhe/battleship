@@ -1,4 +1,8 @@
 .game {
+  border-radius: 0.2rem;
+  border: var(--border);
+  box-shadow: var(--box-shadow);
+  background-color: var(--dark-secondary-color);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -6,6 +10,11 @@
 }
 
 .game .message {
+  align-self: stretch;
+  background-color: var(--tertiary-color);
+  border-bottom: var(--border);
+  box-shadow: 0 10px 10px -10px #3c3c3c;
+  padding: 1rem;
   font-size: 1.5rem;
   text-align: center;
 }
@@ -23,13 +32,17 @@
 }
 
 .game-areas {
-  display: flex;
-  justify-content: center;
-  gap: 10vw;
+  padding: 1rem;
+  width: 100%;
+  display: grid;
+  grid-template: repeat(2, max-content) / repeat(2, 1fr);
 }
 
 .game-area {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .gameboard {
@@ -86,12 +99,9 @@
 }
 
 .ships {
-  width: 100%;
-  position: absolute;
   padding: 0.5rem;
   display: grid;
   grid-template-columns: repeat(3, max-content);
-  justify-content: center;
   align-items: center;
   gap: 1rem;
 }
@@ -189,7 +199,7 @@
 }
 
 .disabled .gameboard-label {
-  color: gray;
+  color: lightgray;
 }
 
 .disabled .ship-square.full {

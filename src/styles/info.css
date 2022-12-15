@@ -1,6 +1,27 @@
 .info {
+  width: max-content;
+  min-width: 40vw;
+  margin: 10vh auto 1rem;
+  padding: 1.5rem;
+  border-radius: 0.2rem;
+  border: var(--border);
+  box-shadow: var(--box-shadow);
+  background-color: var(--dark-secondary-color);
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1rem;
+}
+
+.info .heading {
+  font-size: 2rem;
+  text-shadow: var(--heading-text-stroke);
+}
+
+.info.info button {
+  background-color: var(--tertiary-color);
+}
+
+.info.info button:hover {
+  background-color: var(--dark-tertiary-color);
 }
