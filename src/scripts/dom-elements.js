@@ -12,6 +12,14 @@ export const playerSetUpForm = document.querySelector(
   'section.player-set-up form'
 );
 
+export const infoView = document.querySelector('section.info');
+export const playerNameSpans = document.querySelectorAll(
+  '.info span.player-name'
+);
+export const infoContinueButton = document.querySelector(
+  '.info button.info-continue'
+);
+
 export const gameView = document.querySelector('section.game');
 export const gameMessage = document.querySelector('.game .message');
 export const gameAreaDivs = document.querySelectorAll('.game .game-area');

@@ -9,6 +9,7 @@ import {
   playerSetUpForm,
   startGameButton,
   resetGameButton,
+  infoContinueButton,
 } from './dom-elements';
 import {
   currPlayer,
@@ -36,6 +37,7 @@ import {
   hideResetGameButton,
   showRemainingShipsCount,
   showRemainingShips,
+  infoView,
 } from './views';
 
 function resetGame() {
@@ -57,6 +59,7 @@ modeSelectionButtons.forEach((button) =>
   button.addEventListener('click', submitMode)
 );
 
+// TO DO: Add a view about who is player 1 and who is player 2 and a continue button
 function submitPlayerSetUp(e) {
   e.preventDefault();
   const names = [...e.target.querySelectorAll('input')].map(
@@ -69,10 +72,11 @@ function submitPlayerSetUp(e) {
       nameIndex += 1;
     }
   });
-  startGameboardSetUp();
+  infoView(gameData.players.map((player) => player.name));
 }
 playerSetUpForm.addEventListener('submit', submitPlayerSetUp);
 
+infoContinueButton.addEventListener('click', startGameboardSetUp);
 passDeviceContinueButton.addEventListener('click', gameView);
 
 function updateAutoAttacks(newIndex = 0) {

@@ -32,6 +32,15 @@ export function playerSetUpView(playerMaxIndex) {
     );
 }
 
+export function infoView(playerNames) {
+  hideAllViews();
+  dom.infoView.classList.remove('hidden');
+
+  dom.playerNameSpans.forEach((playerNameSpan, i) => {
+    playerNameSpan.textContent = playerNames[i];
+  });
+}
+
 export function gameView() {
   hideAllViews();
   dom.gameView.classList.remove('hidden');
