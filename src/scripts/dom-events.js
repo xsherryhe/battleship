@@ -121,7 +121,6 @@ function displayGameOver(displayAutoTurn = true) {
   }
 }
 
-// TO DO: Remaining ships counter
 function displayGame(displayAutoTurn = true) {
   const player =
     (turnOver() && displayAutoTurn && gameData.players[computerIndex()]) ||
