@@ -39,6 +39,7 @@ import {
   showRemainingShips,
   infoView,
 } from './views';
+import validate from './dom-form-validation';
 
 function resetGame() {
   hideResetGameButton();
@@ -61,6 +62,8 @@ modeSelectionButtons.forEach((button) =>
 
 function submitPlayerSetUp(e) {
   e.preventDefault();
+  if (!validate(playerSetUpForm)) return;
+
   const names = [...e.target.querySelectorAll('input')].map(
     (input) => input.value
   );

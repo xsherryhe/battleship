@@ -57,6 +57,10 @@ button:not(.rotate):not(.square) {
   flex-direction: column;
 }
 
+.error {
+  color: red;
+}
+
 .hidden {
   display: none !important;
 }

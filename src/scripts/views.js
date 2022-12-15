@@ -14,7 +14,8 @@ function playerNameFieldTemplate(i, playerMaxIndex) {
     <label for="player-${i}-name">Player${
     playerMaxIndex ? ` ${i + 1}` : ''
   } Name</label>
-    <input type="text" name="player-${i}-name" id="player-${i}-name">
+    <input type="text" name="player-${i}-name" id="player-${i}-name" required>
+    <div class="error hidden"></div>
   </div>`;
 }
 
