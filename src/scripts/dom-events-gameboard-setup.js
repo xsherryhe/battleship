@@ -106,12 +106,14 @@ function enableGameboardSetUpEvents() {
     const ships = shipDivs();
     ships.forEach((ship) => {
       function drag() {
-        ship.classList.add('hidden');
+        ship.classList.add('invisible');
+        ship.classList.add('dragged');
       }
       ship.addEventListener('drag', drag);
 
       function dragStart(e) {
         draggedShip = ship;
+        ship.classList.add('dragged'); // For cross-browser compatability
         const squareCenter = Number(ship.dataset.squareLength) / 2;
         e.dataTransfer.setDragImage(ship, squareCenter, squareCenter);
         ships.forEach((otherShip) => {
@@ -125,7 +127,8 @@ function enableGameboardSetUpEvents() {
       ship.addEventListener('dragstart', dragStart);
 
       function dragEnd() {
-        ship.classList.remove('hidden');
+        ship.classList.remove('invisible');
+        ship.classList.remove('dragged');
         uncolorizeShipBorder();
         ships.forEach((otherShip) => {
           otherShip
@@ -174,7 +177,7 @@ function updateGameboardSetUp() {
 
   const playerName = gameData.players[index].name;
   highlightGameArea(index, true);
-  showMessage(`${playerName}, place your ships.`);
+  showMessage(`${playerName} (Player ${index + 1}), place your ships.`);
   if (currGameboardSetUpIndex >= 0 && index !== currGameboardSetUpIndex)
     passDeviceView(playerName, index);
   currGameboardSetUpIndex = index;

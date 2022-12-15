@@ -1,6 +1,7 @@
 import * as settings from './settings';
 import * as dom from './dom-elements';
 import { showMessage } from './views';
+import rotate from '../images/rotate.svg';
 
 function drawGameboards(squareLength, gameboardLength) {
   dom.gameboardDivs.forEach((gameboardDiv) => {
@@ -31,7 +32,7 @@ function shipTemplate(squareLength, shipLength, shipIndex, gameAreaIndex) {
       template += `<div class="ship-square full"></div>`;
     }
   }
-  template += `<button class="rotate">R</button></div>`;
+  template += `<button class="rotate"><img src=${rotate} alt="rotate"></button></div>`;
   return template;
 }
 
@@ -108,7 +109,7 @@ export function showErrorShipOrientation(ship, position) {
 
 export function drawGameAreas(nameLabels) {
   dom.gameboardLabelDivs.forEach((labelDiv, i) => {
-    labelDiv.textContent = `${nameLabels[i]}'s Shipyard`;
+    labelDiv.textContent = `${nameLabels[i]}’s Shipyard`;
   });
   dom.remainingShipsDivs.forEach((div) => div.classList.add('hidden'));
 

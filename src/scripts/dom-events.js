@@ -115,7 +115,11 @@ function displayGameOver(displayAutoTurn = true) {
     gameData.gameOver &&
     !(currPlayer().type === 'computerPlayer' && displayAutoTurn);
   if (display) {
-    showMessage(`Game over! ${currPlayer().name} wins.`);
+    showMessage(
+      `Game over! ${currPlayer().name} (Player ${
+        gameData.currPlayerIndex + 1
+      }) wins.`
+    );
     unhighlightGameAreas();
     showResetGameButton();
   }
@@ -125,10 +129,11 @@ function displayGame(displayAutoTurn = true) {
   const player =
     (turnOver() && displayAutoTurn && gameData.players[computerIndex()]) ||
     currPlayer();
+  const playerIndex = gameData.players.indexOf(player);
   const autoTurn = player.type === 'computerPlayer';
 
-  showMessage(`${player.name}'s turn...`);
-  highlightGameArea(1 - gameData.players.indexOf(player), autoTurn);
+  showMessage(`${player.name} (Player ${playerIndex + 1})'s turn...`);
+  highlightGameArea(1 - playerIndex, autoTurn);
 
   updateAttacks();
   if (autoTurn) updateAutoAttacks();

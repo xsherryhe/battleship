@@ -1,0 +1,191 @@
+.game {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.game .message {
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.game button:not(.rotate):not(.square) {
+  margin-top: 1rem;
+}
+
+.game-areas {
+  display: flex;
+  justify-content: center;
+  gap: 10vw;
+}
+
+.game-area {
+  position: relative;
+}
+
+.gameboard {
+  display: grid;
+  width: max-content;
+  border: 0.1rem solid black;
+  background-color: white;
+}
+
+.square {
+  border: 0.05rem solid black;
+  position: relative;
+  background-color: transparent;
+  padding: 0;
+  display: flex;
+}
+
+.square.with-background-ship {
+  transform-style: preserve-3d;
+}
+
+.square.with-background-ship .ship {
+  transform: translateZ(-1px);
+}
+
+.square.hit {
+  color: red;
+}
+
+.square.miss {
+  color: black;
+}
+
+.square.legal-border {
+  background-color: rgba(0, 128, 0, 0.5);
+}
+
+.square.error-border {
+  background-color: rgba(255, 0, 0, 0.5);
+}
+
+.ships {
+  width: 100%;
+  position: absolute;
+  padding: 0.5rem;
+  display: grid;
+  grid-template-columns: repeat(3, max-content);
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.ship {
+  position: relative;
+  grid-column-end: span 1;
+  display: grid;
+  z-index: 1;
+}
+
+.ship.on-gameboard {
+  position: absolute;
+}
+
+.ship-square.full {
+  background-color: black;
+}
+
+.ship[data-orientation="0"] .ship-square.full {
+  grid-column: 1 / span 2;
+}
+
+.ship[data-orientation="1"] .ship-square.full {
+  grid-row: 1 / span 2;
+}
+
+.ship-square.top-left {
+  background-image: linear-gradient(to bottom right, transparent 50%, black 50%);
+  grid-column: 1;
+}
+
+.ship[data-orientation="1"] .ship-square.top-left {
+  grid-row: 1;
+}
+
+.ship-square.top-right {
+  background-image: linear-gradient(to bottom left, transparent 50%, black 50%);
+  grid-column: 2;
+}
+
+.ship[data-orientation="1"] .ship-square.top-right {
+  grid-column: -2;
+  grid-row: 1;
+}
+
+.ship-square.bottom-left {
+  background-image: linear-gradient(to bottom left, black 50%, transparent 50%);
+  grid-column: 1;
+}
+
+.ship[data-orientation="1"] .ship-square.bottom-left {
+  grid-row: 2;
+}
+
+.ship-square.bottom-right {
+  background-image: linear-gradient(to bottom right, black 50%, transparent 50%);
+  grid-column: 2;
+}
+
+.ship[data-orientation="1"] .ship-square.bottom-right {
+  grid-column: -2;
+  grid-row: 2;
+}
+
+.invisible .ship-square {
+  background-image: none;
+  background-color: transparent;
+}
+
+.ship button.rotate {
+  padding: 0;
+  background-color: transparent;
+  border: none;
+  grid-row: 1;
+  grid-column: 3 / span 2;
+  justify-self: center;
+}
+
+.ship button.rotate img {
+  width: 100%;
+}
+
+.ship[data-orientation="1"] button.rotate {
+  grid-row: 3 / span 2;
+  grid-column: 1;
+}
+
+.invisible button.rotate {
+  visibility: hidden;
+}
+
+.disabled * {
+  border-color: lightgray;
+}
+
+.disabled .gameboard-label {
+  color: gray;
+}
+
+.disabled .ship-square.full {
+  background-color: gray;
+}
+
+.disabled .ship-square.top-left {
+  background-image: linear-gradient(to bottom right, transparent 50%, gray 50%);
+}
+
+.disabled .ship-square.top-right {
+  background-image: linear-gradient(to bottom left, transparent 50%, gray 50%);
+}
+
+.disabled .ship-square.bottom-left {
+  background-image: linear-gradient(to bottom left, gray 50%, transparent 50%);
+}
+
+.disabled .ship-square.bottom-right {
+  background-image: linear-gradient(to bottom right, gray 50%, transparent 50%);
+}
