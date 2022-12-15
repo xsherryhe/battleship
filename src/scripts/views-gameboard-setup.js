@@ -115,7 +115,7 @@ export function drawGameAreas(nameLabels) {
 
   const squareLength =
     Math.min(window.innerHeight, window.innerWidth) /
-    (2.25 * settings.gameboardLength);
+    (2.2 * settings.gameboardLength);
   drawGameboards(squareLength, settings.gameboardLength);
   drawShips(squareLength);
 }
@@ -138,6 +138,6 @@ export function showStartGame() {
   });
   dom.rotateShipButtons().forEach((button) => button.classList.add('hidden'));
 
-  showMessage('Click the Start button to begin the game!');
+  showMessage('Click the Start Game button to begin the game!');
   dom.startGameButton.classList.remove('hidden');
 }

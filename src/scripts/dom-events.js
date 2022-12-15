@@ -59,7 +59,6 @@ modeSelectionButtons.forEach((button) =>
   button.addEventListener('click', submitMode)
 );
 
-// TO DO: Add a view about who is player 1 and who is player 2 and a continue button
 function submitPlayerSetUp(e) {
   e.preventDefault();
   const names = [...e.target.querySelectorAll('input')].map(
@@ -136,7 +135,7 @@ function displayGame(displayAutoTurn = true) {
   const playerIndex = gameData.players.indexOf(player);
   const autoTurn = player.type === 'computerPlayer';
 
-  showMessage(`${player.name} (Player ${playerIndex + 1})'s turn...`);
+  showMessage(`${player.name} (Player ${playerIndex + 1})’s turn...`);
   highlightGameArea(1 - playerIndex, autoTurn);
 
   updateAttacks();

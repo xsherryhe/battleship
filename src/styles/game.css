@@ -14,6 +14,14 @@
   margin-top: 1rem;
 }
 
+.game .start-game.start-game {
+  margin: 0;
+  position: absolute;
+  top: 30vh;
+  font-size: 1.5rem;
+  padding: 1.5rem 3rem;
+}
+
 .game-areas {
   display: flex;
   justify-content: center;
@@ -61,6 +69,20 @@
 
 .square.error-border {
   background-color: rgba(255, 0, 0, 0.5);
+}
+
+.marker {
+  width: 100%;
+  align-self: center;
+}
+
+.hit .marker {
+  font-weight: 900;
+  font-size: 130%;
+}
+
+.miss .marker {
+  font-size: 40%;
 }
 
 .ships {

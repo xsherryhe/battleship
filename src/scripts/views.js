@@ -78,7 +78,7 @@ export function showAttack(square, success) {
   square.classList.add(success ? 'hit' : 'miss', 'attacked');
   square.insertAdjacentHTML(
     'beforeend',
-    `<p class="marker">${success ? 'X' : 'O'}</p>`
+    `<p class="marker">${success ? '╳' : '⬤'}</p>`
   );
 }
 
