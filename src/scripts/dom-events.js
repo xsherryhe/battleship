@@ -11,6 +11,7 @@ import {
   startGameButton,
   resetGameButton,
   infoContinueButton,
+  resetGameButtons,
 } from './dom-elements';
 import {
   currPlayer,
@@ -48,7 +49,9 @@ function resetGame() {
   modeSelectionView();
 }
 window.addEventListener('load', resetGame);
-resetGameButton.addEventListener('click', resetGame);
+resetGameButtons.forEach((button) =>
+  button.addEventListener('click', resetGame)
+);
 
 function submitMode(e) {
   initializeGame({

@@ -36,14 +36,20 @@ body {
 header {
   background-color: var(--secondary-color);
   box-shadow: var(--box-shadow);
-  text-shadow: var(--heading-text-stroke);
   z-index: 2;
   padding: 1rem;
   font-size: 3rem;
-  letter-spacing: 0.1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+header button {
+  background-color: transparent;
+  color: var(--font-color);
+  border: none;
+  text-shadow: var(--heading-text-stroke);
+  letter-spacing: 0.1rem;
 }
 
 header img {
@@ -83,7 +89,7 @@ button:not(.square) {
   cursor: pointer;
 }
 
-button:not(.rotate):not(.square) {
+main button:not(.rotate):not(.square) {
   background-color: var(--tertiary-color);
   color: white;
   box-shadow: var(--box-shadow);
@@ -92,7 +98,7 @@ button:not(.rotate):not(.square) {
   padding: 0.5rem 1.5rem;
 }
 
-button:not(.rotate):not(.square):hover {
+main button:not(.rotate):not(.square):hover {
   background-color: var(--dark-tertiary-color);
 }
 

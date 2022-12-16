@@ -47,7 +47,8 @@ export const updateGameboardSetUpButton = document.querySelector(
   'button.update-gameboard-set-up'
 );
 export const startGameButton = document.querySelector('button.start-game');
-export const resetGameButton = document.querySelector('button.reset-game');
+export const resetGameButtons = document.querySelectorAll('button.reset-game');
+export const resetGameButton = document.querySelector('main button.reset-game');
 
 export const passDeviceView = document.querySelector('section.pass-device');
 export const passDevicePlayerSpan = document.querySelector(
