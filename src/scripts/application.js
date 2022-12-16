@@ -6,6 +6,7 @@ import '../styles/mode-selection.css';
 import '../styles/player-set-up.css';
 import '../styles/info.css';
 import '../styles/game.css';
+import '../styles/pass-device.css';
 
 import '../images/rotate.svg';
 import '../images/rotate-hover.svg';

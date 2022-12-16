@@ -118,7 +118,7 @@ export function uncolorizeDragContainer(element) {
 
 export function drawGameAreas(nameLabels) {
   dom.gameboardLabelDivs.forEach((labelDiv, i) => {
-    labelDiv.textContent = `${nameLabels[i]}’s Shipyard`;
+    labelDiv.textContent = `${nameLabels[i]} (Player ${i + 1})’s Shipyard`;
   });
   dom.remainingShipsSpans.forEach((span) => {
     span.textContent = settings.shipLengths.length;
@@ -149,16 +149,6 @@ export function hideUpdateGameboardSetUpButton() {
 
 export function showStartGame() {
   hideGameAreas();
-  /*
-  dom.shipDivs().forEach((ship) => {
-    // ship.classList.add('hidden');
-    // const square = ship.closest('.square');
-    // if (square) square.classList.add('with-background-ship');
-    ship.draggable = false;
-  });
-  dom.rotateShipButtons().forEach((button) => button.classList.add('hidden'));
-  */
-
   showMessage('Click the Start Game button to begin the game!');
   showStartGameButton();
 }

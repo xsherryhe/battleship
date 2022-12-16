@@ -140,7 +140,10 @@ function displayGame(displayAutoTurn = true) {
   const playerIndex = gameData.players.indexOf(player);
   const autoTurn = player.type === 'computerPlayer';
 
-  showMessage(`${player.name} (Player ${playerIndex + 1})’s turn...`);
+  const message = `${player.name} (Player ${playerIndex + 1})’s turn.${
+    autoTurn ? '..' : " Click the enemy's shipyard to attack!"
+  }`;
+  showMessage(message);
   highlightGameArea(1 - playerIndex, autoTurn);
 
   updateAttacks();

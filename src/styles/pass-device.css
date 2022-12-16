@@ -1,0 +1,14 @@
+.pass-device {
+  height: 100%;
+  font-size: 1.5rem;
+  padding: 1rem;
+  border-radius: 0.2rem;
+  border: var(--border);
+  box-shadow: var(--box-shadow);
+  background-color: var(--dark-secondary-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
