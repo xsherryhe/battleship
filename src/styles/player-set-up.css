@@ -12,11 +12,3 @@
   background-color: var(--dark-secondary-color);
   align-items: center;
 }
-
-.player-set-up.player-set-up form button {
-  background-color: var(--tertiary-color);
-}
-
-.player-set-up.player-set-up form button:hover {
-  background-color: var(--dark-tertiary-color);
-}

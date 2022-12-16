@@ -10,6 +10,7 @@ import {
   highlightGameArea,
   showMessage,
   passDeviceView,
+  showGameAreaSetUp,
 } from './views';
 import {
   drawGameAreas,
@@ -49,6 +50,12 @@ export function findGameboardSquare(gameAreaIndex, position) {
       gameAreaIndex === targetGameAreaIndex &&
       equalsArray(position, targetPosition)
   ).square;
+}
+
+export function disableGameboardSetUpEvents() {
+  shipDivs().forEach((ship) => {
+    ship.draggable = false;
+  });
 }
 
 let currGameboardSetUpIndex = -1;
@@ -220,6 +227,7 @@ updateGameboardSetUpButton.addEventListener('click', updateGameboardSetUp);
 
 export default function startGameboardSetUp() {
   gameView();
+  showGameAreaSetUp();
   drawGameAreas(gameData.players.map((player) => player.name));
   populateGameboardSquares();
   enableGameboardSetUpEvents();

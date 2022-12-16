@@ -51,6 +51,19 @@ export function showMessage(message) {
   dom.gameMessage.textContent = message;
 }
 
+export function showAttack(square, success) {
+  if (square.classList.contains('attacked')) return;
+  square.classList.add(success ? 'hit' : 'miss', 'attacked');
+  square.insertAdjacentHTML(
+    'beforeend',
+    `<p class="marker">${success ? '╳' : '⬤'}</p>`
+  );
+}
+
+export function showRemainingShipsCount(gameAreaIndex, ships) {
+  dom.remainingShipsSpans[gameAreaIndex].textContent = ships;
+}
+
 export function highlightGameArea(gameAreaIndex, ownGameArea = false) {
   dom.gameAreaDivs.forEach((gameArea, i) => {
     const ships = gameArea.querySelectorAll('.ship');
@@ -66,6 +79,10 @@ export function highlightGameArea(gameAreaIndex, ownGameArea = false) {
         if (ownGameArea) ship.classList.remove('hidden');
         else ship.classList.add('hidden');
       });
+      gameArea.querySelectorAll('.square').forEach((square) => {
+        if (ownGameArea) square.classList.remove('clickable');
+        else square.classList.add('clickable');
+      });
     }
   });
 }
@@ -74,24 +91,30 @@ export function unhighlightGameAreas() {
   dom.gameAreaDivs.forEach((gameArea) => gameArea.classList.add('disabled'));
 }
 
-export function showAttack(square, success) {
-  if (square.classList.contains('attacked')) return;
-  square.classList.add(success ? 'hit' : 'miss', 'attacked');
-  square.insertAdjacentHTML(
-    'beforeend',
-    `<p class="marker">${success ? '╳' : '⬤'}</p>`
+export function showGameAreas() {
+  dom.gameAreaDivs.forEach((gameArea) =>
+    gameArea.classList.remove('hidden-visibility')
   );
 }
 
-export function showRemainingShips(ships) {
-  dom.remainingShipsDivs.forEach((div) => div.classList.remove('hidden'));
-  dom.remainingShipsSpans.forEach((span) => {
-    span.textContent = ships;
-  });
+export function hideGameAreas() {
+  dom.gameAreaDivs.forEach((gameArea) =>
+    gameArea.classList.add('hidden-visibility')
+  );
 }
 
-export function showRemainingShipsCount(gameAreaIndex, ships) {
-  dom.remainingShipsSpans[gameAreaIndex].textContent = ships;
+export function showGameAreaSetUp() {
+  dom.gameAreaDivs.forEach((div) => div.classList.add('set-up'));
+  dom.gameAreaDivs.forEach((div) => div.classList.remove('play'));
+}
+
+export function showGameAreaPlay() {
+  dom.gameAreaDivs.forEach((div) => div.classList.remove('set-up'));
+  dom.gameAreaDivs.forEach((div) => div.classList.add('play'));
+}
+
+export function showStartGameButton() {
+  dom.startGameButton.classList.remove('hidden');
 }
 
 export function hideStartGameButton() {

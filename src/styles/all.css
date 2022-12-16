@@ -78,12 +78,12 @@ p {
   margin: 0;
 }
 
-button {
+button:not(.square) {
   cursor: pointer;
 }
 
 button:not(.rotate):not(.square) {
-  background-color: var(--dark-secondary-color);
+  background-color: var(--tertiary-color);
   color: white;
   box-shadow: var(--box-shadow);
   border: var(--border);
@@ -92,7 +92,7 @@ button:not(.rotate):not(.square) {
 }
 
 button:not(.rotate):not(.square):hover {
-  background-color: var(--secondary-color);
+  background-color: var(--dark-tertiary-color);
 }
 
 .dragging, .dragging * {
@@ -121,4 +121,8 @@ button:not(.rotate):not(.square):hover {
 
 .hidden {
   display: none !important;
+}
+
+.hidden-visibility {
+  visibility: hidden;
 }

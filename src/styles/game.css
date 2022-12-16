@@ -20,13 +20,12 @@
 }
 
 .game button:not(.rotate):not(.square) {
-  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 
 .game .start-game.start-game {
-  margin: 0;
   position: absolute;
-  top: 30vh;
+  top: 50vh;
   font-size: 1.5rem;
   padding: 1.5rem 3rem;
 }
@@ -60,16 +59,16 @@
   display: flex;
 }
 
-.square.with-background-ship {
+.play .square, .square.with-background-ship {
   transform-style: preserve-3d;
 }
 
-.square.with-background-ship .ship {
+.play .square .ship, .square.with-background-ship .ship {
   transform: translateZ(-1px);
 }
 
 .square.hit {
-  color: red;
+  color: var(--dark-tertiary-color);
 }
 
 .square.miss {
@@ -84,6 +83,14 @@
   background-color: rgba(255, 0, 0, 0.5);
 }
 
+.play:not(.disabled) .square.clickable {
+  cursor: pointer;
+}
+
+.play:not(.disabled) .square.clickable:hover {
+  background-color: var(--light-secondary-color);
+}
+
 .marker {
   width: 100%;
   align-self: center;
@@ -91,15 +98,15 @@
 
 .hit .marker {
   font-weight: 900;
-  font-size: 130%;
+  font-size: 170%;
 }
 
 .miss .marker {
-  font-size: 40%;
+  font-size: 50%;
 }
 
 .ships {
-  margin: 1rem;
+  margin-top: 1rem;
   padding: 1rem;
   min-width: 75%;
   background-color: white;
@@ -218,26 +225,26 @@
   color: lightgray;
 }
 
-.disabled .ships {
+.set-up .remaining-ships, .disabled .ships, .play .ships, .play .ship button.rotate {
   display: none;
 }
 
-.disabled .ship-square.full {
-  background-color: gray;
+.play:not(.disabled) .ship-square.full {
+  background-color: var(--light-secondary-color);
 }
 
-.disabled .ship-square.top-left {
-  background-image: linear-gradient(to bottom right, transparent 50%, gray 50%);
+.play:not(.disabled) .ship-square.top-left {
+  background-image: linear-gradient(to bottom right, transparent 50%, var(--light-secondary-color) 50%);
 }
 
-.disabled .ship-square.top-right {
-  background-image: linear-gradient(to bottom left, transparent 50%, gray 50%);
+.play:not(.disabled) .ship-square.top-right {
+  background-image: linear-gradient(to bottom left, transparent 50%, var(--light-secondary-color) 50%);
 }
 
-.disabled .ship-square.bottom-left {
-  background-image: linear-gradient(to bottom left, gray 50%, transparent 50%);
+.play:not(.disabled) .ship-square.bottom-left {
+  background-image: linear-gradient(to bottom left, var(--light-secondary-color) 50%, transparent 50%);
 }
 
-.disabled .ship-square.bottom-right {
-  background-image: linear-gradient(to bottom right, gray 50%, transparent 50%);
+.play:not(.disabled) .ship-square.bottom-right {
+  background-image: linear-gradient(to bottom right, var(--light-secondary-color) 50%, transparent 50%);
 }

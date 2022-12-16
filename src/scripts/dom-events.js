@@ -1,4 +1,5 @@
 import startGameboardSetUp, {
+  disableGameboardSetUpEvents,
   findGameboardSquare,
   gameboardSquares,
 } from './dom-events-gameboard-setup';
@@ -36,8 +37,9 @@ import {
   showResetGameButton,
   hideResetGameButton,
   showRemainingShipsCount,
-  showRemainingShips,
   infoView,
+  showGameAreas,
+  showGameAreaPlay,
 } from './views';
 import validate from './dom-form-validation';
 
@@ -178,8 +180,10 @@ function enableGameboardEvents() {
 }
 
 function startGame() {
+  disableGameboardSetUpEvents();
   hideStartGameButton();
-  showRemainingShips(settings.shipLengths.length);
+  showGameAreas();
+  showGameAreaPlay();
   enableGameboardEvents();
 
   if (gameData.modes.playerMode === 1)

@@ -1,6 +1,6 @@
 import * as settings from './settings';
 import * as dom from './dom-elements';
-import { showMessage } from './views';
+import { hideGameAreas, showMessage, showStartGameButton } from './views';
 import rotate from '../images/rotate.svg';
 import rotateHover from '../images/rotate-hover.svg';
 
@@ -120,7 +120,9 @@ export function drawGameAreas(nameLabels) {
   dom.gameboardLabelDivs.forEach((labelDiv, i) => {
     labelDiv.textContent = `${nameLabels[i]}’s Shipyard`;
   });
-  dom.remainingShipsDivs.forEach((div) => div.classList.add('hidden'));
+  dom.remainingShipsSpans.forEach((span) => {
+    span.textContent = settings.shipLengths.length;
+  });
 
   const squareLength =
     Math.min(window.innerHeight, window.innerWidth) /
@@ -146,15 +148,17 @@ export function hideUpdateGameboardSetUpButton() {
 }
 
 export function showStartGame() {
-  dom.gameAreaDivs.forEach((gameArea) => gameArea.classList.add('disabled'));
+  hideGameAreas();
+  /*
   dom.shipDivs().forEach((ship) => {
-    ship.classList.add('hidden');
-    const square = ship.closest('.square');
-    if (square) square.classList.add('with-background-ship');
+    // ship.classList.add('hidden');
+    // const square = ship.closest('.square');
+    // if (square) square.classList.add('with-background-ship');
     ship.draggable = false;
   });
   dom.rotateShipButtons().forEach((button) => button.classList.add('hidden'));
+  */
 
   showMessage('Click the Start Game button to begin the game!');
-  dom.startGameButton.classList.remove('hidden');
+  showStartGameButton();
 }

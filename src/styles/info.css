@@ -17,11 +17,3 @@
   font-size: 2rem;
   text-shadow: var(--heading-text-stroke);
 }
-
-.info.info button {
-  background-color: var(--tertiary-color);
-}
-
-.info.info button:hover {
-  background-color: var(--dark-tertiary-color);
-}
