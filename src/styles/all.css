@@ -76,7 +76,7 @@ p {
   margin: 0;
 }
 
-button, *[draggable='true'] {
+button, *[draggable="true"] {
   cursor: pointer;
 }
 
@@ -93,7 +93,7 @@ button:not(.rotate):not(.square):hover {
   background-color: var(--secondary-color);
 }
 
-*[draggable='true'].dragged {
+.dragging, .dragging * {
   cursor: grabbing;
   cursor: -moz-grabbing;
   cursor: -webkit-grabbing;

@@ -103,7 +103,7 @@
   display: grid;
   grid-template-columns: repeat(3, max-content);
   align-items: center;
-  gap: 1rem;
+  gap: min(6vw, 6vh);
 }
 
 .ship {
@@ -173,12 +173,13 @@
 }
 
 .ship button.rotate {
+  position: absolute;
+  width: min(6vw, 6vh);
   padding: 0;
   background-color: transparent;
   border: none;
   grid-row: 1;
   grid-column: 3 / span 2;
-  justify-self: center;
 }
 
 .ship button.rotate img {

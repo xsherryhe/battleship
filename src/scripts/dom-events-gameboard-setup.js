@@ -106,29 +106,25 @@ function enableGameboardSetUpEvents() {
     const ships = shipDivs();
     ships.forEach((ship) => {
       function drag() {
+        document.body.classList.add('dragging');
         ship.classList.add('invisible');
-        ship.classList.add('dragged');
+        ships.forEach((otherShip) => {
+          otherShip.closest('.square')?.classList?.add('with-background-ship');
+        });
       }
       ship.addEventListener('drag', drag);
 
       function dragStart(e) {
+        document.body.classList.add('dragging'); // For cross-browser compatability
         draggedShip = ship;
-        ship.classList.add('dragged'); // For cross-browser compatability
         const squareCenter = Number(ship.dataset.squareLength) / 2;
         e.dataTransfer.setDragImage(ship, squareCenter, squareCenter);
-        ships.forEach((otherShip) => {
-          if (
-            otherShip !== ship &&
-            otherShip.classList.contains('on-gameboard')
-          )
-            otherShip.closest('.square').classList.add('with-background-ship');
-        });
       }
       ship.addEventListener('dragstart', dragStart);
 
       function dragEnd() {
+        document.body.classList.remove('dragging');
         ship.classList.remove('invisible');
-        ship.classList.remove('dragged');
         uncolorizeShipBorder();
         ships.forEach((otherShip) => {
           otherShip

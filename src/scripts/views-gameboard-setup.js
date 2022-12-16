@@ -18,7 +18,7 @@ function drawGameboards(squareLength, gameboardLength) {
 }
 
 function shipTemplate(squareLength, shipLength, shipIndex, gameAreaIndex) {
-  let template = `<div style="display: grid; grid-template: repeat(${shipLength}, ${squareLength}px) / repeat(4, ${
+  let template = `<div style="display: grid; grid-template: repeat(${shipLength}, ${squareLength}px) / repeat(2, ${
     squareLength / 2
   }px);" class="ship" data-game-area-index="${gameAreaIndex}" data-index="${shipIndex}" data-square-length="${squareLength}" data-orientation="0" draggable="true">`;
   for (let i = 0; i < shipLength; i += 1) {
@@ -115,7 +115,7 @@ export function drawGameAreas(nameLabels) {
 
   const squareLength =
     Math.min(window.innerHeight, window.innerWidth) /
-    (2.2 * settings.gameboardLength);
+    (1.8 * settings.gameboardLength);
   drawGameboards(squareLength, settings.gameboardLength);
   drawShips(squareLength);
 }
