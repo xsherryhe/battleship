@@ -3,6 +3,7 @@ import {
   shipDivs,
   rotateShipButtons,
   updateGameboardSetUpButton,
+  shipsDivs,
 } from './dom-elements';
 import {
   gameView,
@@ -19,6 +20,10 @@ import {
   showUpdateGameboardSetUpButton,
   hideUpdateGameboardSetUpButton,
   showStartGame,
+  showHoverRotateShipButton,
+  showNormalRotateShipButton,
+  colorizeDragContainer,
+  uncolorizeDragContainer,
 } from './views-gameboard-setup';
 import { gameData } from './game';
 import * as settings from './settings';
@@ -64,6 +69,30 @@ function enableGameboardSetUpEvents() {
 
   function enableGameboardDragAndDrop() {
     let draggedShip;
+    shipsDivs.forEach((shipsDiv, gameAreaIndex) => {
+      function dragOverShips(e) {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        colorizeDragContainer(shipsDiv, true);
+      }
+      shipsDiv.addEventListener('dragover', dragOverShips);
+      shipsDiv.addEventListener('dragleave', () =>
+        uncolorizeDragContainer(shipsDiv)
+      );
+
+      function dropOnShips() {
+        if (currGameboardSetUpIndex !== gameAreaIndex) return;
+
+        gameData.gameboards[gameAreaIndex].unplaceShip(
+          Number(draggedShip.dataset.index)
+        );
+        draggedShip.classList.remove('on-gameboard');
+        shipsDiv.appendChild(draggedShip);
+        hideUpdateGameboardSetUpButton();
+      }
+      shipsDiv.addEventListener('drop', dropOnShips);
+    });
+
     gameboardSquares.forEach(({ square, position, gameAreaIndex }) => {
       function dragOverSquare(e) {
         e.preventDefault();
@@ -125,6 +154,7 @@ function enableGameboardSetUpEvents() {
       function dragEnd() {
         document.body.classList.remove('dragging');
         ship.classList.remove('invisible');
+        shipsDivs.forEach((shipsDiv) => uncolorizeDragContainer(shipsDiv));
         uncolorizeShipBorder();
         ships.forEach((otherShip) => {
           otherShip
@@ -155,9 +185,15 @@ function enableGameboardSetUpEvents() {
     if (shipPosition) updateShipPosition(ship);
     showChangedShipOrientation(ship);
   }
-  rotateShipButtons().forEach((button) =>
-    button.addEventListener('click', rotateShip)
-  );
+  rotateShipButtons().forEach((button) => {
+    button.addEventListener('click', rotateShip);
+    button.addEventListener('mouseover', () =>
+      showHoverRotateShipButton(button)
+    );
+    button.addEventListener('mouseout', () =>
+      showNormalRotateShipButton(button)
+    );
+  });
 }
 
 function updateGameboardSetUp() {

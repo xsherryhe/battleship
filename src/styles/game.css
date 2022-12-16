@@ -99,11 +99,17 @@
 }
 
 .ships {
-  padding: 0.5rem;
+  margin: 1rem;
+  padding: 1rem;
+  min-width: 75%;
+  background-color: white;
+  border: 2px solid black;
+  border-radius: 0.2rem;
   display: grid;
   grid-template-columns: repeat(3, max-content);
+  justify-content: center;
   align-items: center;
-  gap: min(6vw, 6vh);
+  gap: 1rem;
 }
 
 .ship {
@@ -118,7 +124,7 @@
 }
 
 .ship-square.full {
-  background-color: black;
+  background-color: var(--secondary-color);
 }
 
 .ship[data-orientation="0"] .ship-square.full {
@@ -130,7 +136,7 @@
 }
 
 .ship-square.top-left {
-  background-image: linear-gradient(to bottom right, transparent 50%, black 50%);
+  background-image: linear-gradient(to bottom right, transparent 50%, var(--secondary-color) 50%);
   grid-column: 1;
 }
 
@@ -139,7 +145,7 @@
 }
 
 .ship-square.top-right {
-  background-image: linear-gradient(to bottom left, transparent 50%, black 50%);
+  background-image: linear-gradient(to bottom left, transparent 50%, var(--secondary-color) 50%);
   grid-column: 2;
 }
 
@@ -149,7 +155,7 @@
 }
 
 .ship-square.bottom-left {
-  background-image: linear-gradient(to bottom left, black 50%, transparent 50%);
+  background-image: linear-gradient(to bottom left, var(--secondary-color) 50%, transparent 50%);
   grid-column: 1;
 }
 
@@ -158,7 +164,7 @@
 }
 
 .ship-square.bottom-right {
-  background-image: linear-gradient(to bottom right, black 50%, transparent 50%);
+  background-image: linear-gradient(to bottom right, var(--secondary-color) 50%, transparent 50%);
   grid-column: 2;
 }
 
@@ -172,9 +178,18 @@
   background-color: transparent;
 }
 
+*[draggable="true"] .ship-square {
+  cursor: pointer;
+}
+
+.dragging .ship-square {
+  cursor: grabbing;
+  cursor: -moz-grabbing;
+  cursor: -webkit-grabbing;
+}
+
 .ship button.rotate {
-  position: absolute;
-  width: min(6vw, 6vh);
+  width: 100%;
   padding: 0;
   background-color: transparent;
   border: none;
@@ -201,6 +216,10 @@
 
 .disabled .gameboard-label {
   color: lightgray;
+}
+
+.disabled .ships {
+  display: none;
 }
 
 .disabled .ship-square.full {

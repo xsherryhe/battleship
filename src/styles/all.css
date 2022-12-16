@@ -2,8 +2,10 @@
   --site-font: 'Helvetica', 'sans-serif';
   --background-color: #b37d4e;
   --secondary-color: #438496;
+  --light-secondary-color: #baf0ff;
   --dark-secondary-color: #286da8;
   --tertiary-color: #cd5360;
+  --light-tertiary-color: #ffbfc5;
   --dark-tertiary-color: #ce2536;
   --font-color: white;
   --border: 2px solid white;
@@ -76,7 +78,7 @@ p {
   margin: 0;
 }
 
-button, *[draggable="true"] {
+button {
   cursor: pointer;
 }
 
@@ -97,6 +99,14 @@ button:not(.rotate):not(.square):hover {
   cursor: grabbing;
   cursor: -moz-grabbing;
   cursor: -webkit-grabbing;
+}
+
+.legal-drag.legal-drag {
+  background-color: var(--light-secondary-color);
+}
+
+.error-drag.error-drag {
+  background-color: var(--light-tertiary-color);
 }
 
 .field {

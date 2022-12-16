@@ -2,6 +2,7 @@ import * as settings from './settings';
 import * as dom from './dom-elements';
 import { showMessage } from './views';
 import rotate from '../images/rotate.svg';
+import rotateHover from '../images/rotate-hover.svg';
 
 function drawGameboards(squareLength, gameboardLength) {
   dom.gameboardDivs.forEach((gameboardDiv) => {
@@ -18,7 +19,7 @@ function drawGameboards(squareLength, gameboardLength) {
 }
 
 function shipTemplate(squareLength, shipLength, shipIndex, gameAreaIndex) {
-  let template = `<div style="display: grid; grid-template: repeat(${shipLength}, ${squareLength}px) / repeat(2, ${
+  let template = `<div style="display: grid; grid-template: repeat(${shipLength}, ${squareLength}px) / repeat(4, ${
     squareLength / 2
   }px);" class="ship" data-game-area-index="${gameAreaIndex}" data-index="${shipIndex}" data-square-length="${squareLength}" data-orientation="0" draggable="true">`;
   for (let i = 0; i < shipLength; i += 1) {
@@ -107,6 +108,14 @@ export function showErrorShipOrientation(ship, position) {
   }, 500);
 }
 
+export function colorizeDragContainer(element, legal) {
+  element.classList.add(`${legal ? 'legal' : 'error'}-drag`);
+}
+
+export function uncolorizeDragContainer(element) {
+  element.classList.remove('legal-drag', 'error-drag');
+}
+
 export function drawGameAreas(nameLabels) {
   dom.gameboardLabelDivs.forEach((labelDiv, i) => {
     labelDiv.textContent = `${nameLabels[i]}’s Shipyard`;
@@ -118,6 +127,14 @@ export function drawGameAreas(nameLabels) {
     (1.8 * settings.gameboardLength);
   drawGameboards(squareLength, settings.gameboardLength);
   drawShips(squareLength);
+}
+
+export function showHoverRotateShipButton(button) {
+  button.querySelector('img').src = rotateHover;
+}
+
+export function showNormalRotateShipButton(button) {
+  button.querySelector('img').src = rotate;
 }
 
 export function showUpdateGameboardSetUpButton() {

@@ -25,7 +25,7 @@ function CollectionMoveable(
 ) {
   function itemArea(position = this.position) {
     const area = [];
-    if (position === undefined || this.orientation === undefined) return area;
+    if (!position || this.orientation === undefined) return area;
 
     const coordIndex = this.orientation;
     for (let i = 0; i < this[collectionItemName].length; i += 1) {
@@ -107,6 +107,10 @@ function CollectionMoveable(
     return collectionItem.position;
   }
 
+  function unplace(collectionIndex) {
+    collection[collectionIndex].position = null;
+  }
+
   function allPlaced() {
     return collection.every((collectionItem) => collectionItem.position);
   }
@@ -146,6 +150,7 @@ function CollectionMoveable(
 
   return {
     [`place${capitalizedCollectionItem}`]: place,
+    [`unplace${capitalizedCollectionItem}`]: unplace,
     [`legal${capitalizedCollectionItem}Placement`]: legalPlacement,
     [`all${capitalizedCollectionItem}sPlaced`]: allPlaced,
     [`rotate${capitalizedCollectionItem}`]: rotate,

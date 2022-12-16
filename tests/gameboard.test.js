@@ -186,6 +186,15 @@ describe('gameboard', () => {
     });
   });
 
+  describe('gameboard.unplaceShip', () => {
+    it('sets the position of the ship input to something falsy', () => {
+      const gameboard = Gameboard();
+      gameboard.placeShip(0, [2, 5]);
+      gameboard.unplaceShip(0);
+      expect(gameboard.ships[0].position).toBeFalsy();
+    });
+  });
+
   describe('gameboard.legalShipPlacement', () => {
     it('returns true if the coordinate input is a legal ship placement position', () => {
       const gameboard = Gameboard();
