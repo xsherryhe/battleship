@@ -133,3 +133,30 @@ main button:not(.rotate):not(.square):hover {
 .hidden-visibility {
   visibility: hidden;
 }
+
+@media (max-width: 700px) {
+  header img.outer {
+    display: none;
+  }
+}
+
+@media (max-width: 560px) {
+  html {
+    font-size: 16px;
+  }
+
+  header {
+    padding: 0.5rem;
+    font-size: 2.5rem;
+  }
+
+  header img {
+    width: 3rem;
+  }
+}
+
+@media (max-width: 420px) {
+  header img.inner {
+    display: none;
+  }
+}

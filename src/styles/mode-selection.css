@@ -23,3 +23,9 @@
 .mode-selection button img {
   width: 8rem;
 }
+
+@media (max-width: 560px) {
+  .mode-selection.mode-selection.mode-selection button {
+    min-width: 18rem;
+  }
+}
