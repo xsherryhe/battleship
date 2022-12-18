@@ -43,6 +43,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 0.1rem;
 }
 
 .gameboard {
@@ -248,4 +249,37 @@
 
 .play:not(.disabled) .ship-square.bottom-right {
   background-image: linear-gradient(to bottom right, var(--light-secondary-color) 50%, transparent 50%);
+}
+
+@media (max-width: 850px) {
+  .game-areas {
+    grid-template: repeat(2, max-content) / 1fr;
+    row-gap: 1rem;
+  }
+
+  .set-up.disabled {
+    display: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .game .message {
+    padding: 0.5rem;
+    font-size: 1rem;
+    max-width: calc(100vw - 1rem - 4px);
+    min-height: 3.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .game-areas {
+    padding: 0.5rem;
+  }
+}
+
+@media (min-height: 100vw) {
+  .game {
+    min-height: 80vh;
+  }
 }
