@@ -77,7 +77,7 @@ form {
 }
 
 input {
-  min-width: 18rem;
+  min-width: 17.5rem;
   padding: 0.25rem;
 }
 
@@ -152,6 +152,10 @@ main button:not(.rotate):not(.square):hover {
 
   header img {
     width: 3rem;
+  } 
+
+  main {
+    padding: 1rem 0.5rem;
   }
 }
 

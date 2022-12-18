@@ -1,5 +1,5 @@
 .pass-device {
-  height: 100%;
+  min-height: 100%;
   font-size: 1.5rem;
   padding: 1rem;
   border-radius: 0.2rem;
@@ -11,4 +11,11 @@
   justify-content: center;
   align-items: center;
   gap: 1rem;
+}
+
+@media (max-width: 560px) {
+  .pass-device {
+    padding: 0.5rem;
+    font-size: 1.15rem;
+  }
 }

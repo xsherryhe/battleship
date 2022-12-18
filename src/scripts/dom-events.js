@@ -9,7 +9,6 @@ import {
   modeSelectionButtons,
   playerSetUpForm,
   startGameButton,
-  resetGameButton,
   infoContinueButton,
   resetGameButtons,
 } from './dom-elements';

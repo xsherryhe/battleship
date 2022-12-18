@@ -12,3 +12,9 @@
   background-color: var(--dark-secondary-color);
   align-items: center;
 }
+
+@media (max-width: 560px) {
+  .player-set-up form {
+    padding: 1rem 0.5rem;
+  }
+}

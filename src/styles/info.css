@@ -17,3 +17,10 @@
   font-size: 2rem;
   text-shadow: var(--heading-text-stroke);
 }
+
+@media (max-width: 560px) {
+  .info {
+    padding: 0.5rem;
+    min-width: 70vw;
+  }
+}
