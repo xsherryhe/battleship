@@ -2,8 +2,6 @@ This project is a game of Battleship that can be played in the browser against a
 
 The project primarily demonstrates development of a web application with a test-driven development approach, using the testing framework (Jest).
 
-This project is currently in progress.
-
 Image credits:
 
   1. Material Design Icons: https://materialdesignicons.com/  
