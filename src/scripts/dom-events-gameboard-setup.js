@@ -29,6 +29,7 @@ import {
 import { gameData } from './game';
 import * as settings from './settings';
 import { equalsArray } from './utilities';
+import { polyfill } from 'mobile-drag-drop';
 
 export const gameboardSquares = [];
 function populateGameboardSquares() {
@@ -75,6 +76,15 @@ function enableGameboardSetUpEvents() {
   }
 
   function enableGameboardDragAndDrop() {
+    // For mobile compatability
+    polyfill({ dragImageCenterOnTouch: false });
+    let touchDrag = false;
+    function setTouchDrag() {
+      touchDrag = true;
+    }
+    window.addEventListener('touchstart', setTouchDrag);
+    window.addEventListener('touchmove', () => {}, { passive: false });
+
     let draggedShip;
     shipsDivs.forEach((shipsDiv, gameAreaIndex) => {
       function dragOverShips(e) {
@@ -82,6 +92,7 @@ function enableGameboardSetUpEvents() {
         e.dataTransfer.dropEffect = 'move';
         colorizeDragContainer(shipsDiv, true);
       }
+      shipsDiv.addEventListener('dragenter', (e) => e.preventDefault());
       shipsDiv.addEventListener('dragover', dragOverShips);
       shipsDiv.addEventListener('dragleave', () =>
         uncolorizeDragContainer(shipsDiv)
@@ -119,6 +130,7 @@ function enableGameboardSetUpEvents() {
           legalShipPlacement
         );
       }
+      square.addEventListener('dragenter', (e) => e.preventDefault());
       square.addEventListener('dragover', dragOverSquare);
       square.addEventListener('dragleave', uncolorizeShipBorder);
 
@@ -153,7 +165,8 @@ function enableGameboardSetUpEvents() {
       function dragStart(e) {
         document.body.classList.add('dragging'); // For cross-browser compatability
         draggedShip = ship;
-        const squareCenter = Number(ship.dataset.squareLength) / 2;
+        const squareCenter =
+          (Number(ship.dataset.squareLength) / 2) * (touchDrag ? -1 : 1);
         e.dataTransfer.setDragImage(ship, squareCenter, squareCenter);
       }
       ship.addEventListener('dragstart', dragStart);
