@@ -49,7 +49,7 @@ header button {
   background-color: transparent;
   color: var(--font-color);
   border: none;
-  text-shadow: var(--heading-text-stroke);
+  -webkit-text-stroke: 2px var(--tertiary-color);
   letter-spacing: 0.1rem;
 }
 
@@ -123,8 +123,7 @@ main button:not(.rotate):not(.square):hover {
 }
 
 .error {
-  text-shadow: -1px -1px 0 var(--dark-tertiary-color), -1px 1px 0 var(--dark-tertiary-color),
-               1px -1px 0 var(--dark-tertiary-color), 1px 1px 0 var(--dark-tertiary-color);
+  -webkit-text-stroke: 1px var(--dark-tertiary-color);
 }
 
 .hidden {
