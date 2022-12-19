@@ -35,7 +35,6 @@ body {
 }
 
 header {
-  max-width: 100vw;
   background-color: var(--secondary-color);
   box-shadow: var(--box-shadow);
   z-index: 2;
