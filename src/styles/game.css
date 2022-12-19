@@ -96,15 +96,11 @@
 .marker {
   width: 100%;
   align-self: center;
+  font-family: var(--marker-font);
 }
 
 .hit .marker {
   font-weight: 900;
-  font-size: 170%;
-}
-
-.miss .marker {
-  font-size: 50%;
 }
 
 .ships {
@@ -252,6 +248,21 @@
 }
 
 @media (max-width: 850px) {
+  .game {
+    margin: auto;
+    max-width: max-content;
+  }
+
+  .game .message {
+    font-size: 1rem;
+    width: 95vw;
+    min-width: 100%;
+    min-height: 3.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   .game-areas {
     grid-template: repeat(2, max-content) / 1fr;
     row-gap: 1rem;
@@ -265,12 +276,6 @@
 @media (max-width: 560px) {
   .game .message {
     padding: 0.5rem;
-    font-size: 1rem;
-    max-width: calc(100vw - 1rem - 4px);
-    min-height: 3.5rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
   }
 
   .game-areas {
