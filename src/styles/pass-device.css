@@ -1,5 +1,6 @@
 .pass-device {
   min-height: 80vh;
+  max-width: 100vw;
   font-size: 1.5rem;
   padding: 1rem;
   border-radius: 0.2rem;
